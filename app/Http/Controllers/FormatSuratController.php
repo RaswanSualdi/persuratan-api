@@ -18,6 +18,7 @@ class FormatSuratController extends Controller
          
         $year = Carbon::now()->format('y');
         $thisMonth = Carbon::now()->format('m');
+        // $thisMonth = '12'; <= digunakan untuk testing bulan
         //untuk mengambil key id dan key bulan_surat yang ada pada model Format/ tabel format
         $getId=Format::all('id','bulan_surat')->toArray();
         // mengambil array yang mempunyai id terbesar pada table format
@@ -45,9 +46,9 @@ class FormatSuratController extends Controller
         $strToSlug = Str::slug($request->deskripsi);
 
          //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
-         $PassedMonthCount=Format::where('bulan_surat','<', $thisMonth)->pluck('id')->count();
+        //  $PassedMonthCount=Format::where('bulan_surat','<', $thisMonth)->pluck('id')->count();
          $PresentMonthCount =Format::where('bulan_surat','=', $thisMonth)->pluck('id')->count()+1;
-         $TotalMonthCount = $PassedMonthCount + $PresentMonthCount;
+         
 
          //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
         $kodesurat = Kodesurat::find($idkodesurat);
@@ -74,7 +75,7 @@ class FormatSuratController extends Controller
             } elseif($getMaxId['bulan_surat']!=$thisMonth){
                 $format = Format::create([
                     'bulan_surat'=> $thisMonth,
-                    'format'=>'No.00'.$TotalMonthCount-$PassedMonthCount. '/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                    'format'=>'No.00'. $PresentMonthCount . '/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                     'deskripsi'=>$request->deskripsi,
                     'tgl_surat'=>$tgl_surat,
                     'slug'=> $strToSlug,
@@ -98,7 +99,7 @@ class FormatSuratController extends Controller
             elseif($getMaxId['bulan_surat']!=$thisMonth){
                 $format = Format::create([
                     'bulan_surat'=> $thisMonth,
-                    'format'=>'No.0'.$TotalMonthCount-$PassedMonthCount.'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                    'format'=>'No.0'. $PresentMonthCount .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                     'deskripsi'=>$request->deskripsi,
                     'tgl_surat'=>$tgl_surat,
                     'slug'=> $strToSlug,
@@ -121,7 +122,7 @@ class FormatSuratController extends Controller
             elseif($getMaxId['bulan_surat']!=$thisMonth){
                 $format = Format::create([
                     'bulan_surat'=> $thisMonth,
-                    'format'=>'No.'.$TotalMonthCount-$PassedMonthCount.'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                    'format'=>'No.'. $PresentMonthCount .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                     'deskripsi'=>$request->deskripsi,
                     'tgl_surat'=>$tgl_surat,
                     'slug'=> $strToSlug,
