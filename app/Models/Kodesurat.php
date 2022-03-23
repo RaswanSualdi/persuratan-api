@@ -9,7 +9,5 @@ class Kodesurat extends Model
 {
     use HasFactory;
 
-    // protected $fillable = [
-    //     ''
-    // ];
+    
 }

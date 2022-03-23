@@ -7,9 +7,10 @@ use App\Models\Kodesurat;
 
 class KodeSuratController extends Controller
 {
+    //mengakses data kodesurat/jenis surat menggunakan query param
     public function getAll(Request $request){
         $id = $request->input('id');
-        $slug = $request->input('slug');  //slug hanya bisa diakses url menggunakan garis penghubung
+        $slug = $request->input('slug');  //slug hanya bisa diakses url menggunakan garis penghubu
         if($id){
             $kodesurat = Kodesurat::find($id);
             if($kodesurat){

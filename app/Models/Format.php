@@ -12,7 +12,8 @@ class Format extends Model
         'format',
         'deskripsi',
         'tgl_surat',
-        'slug'
+        'slug',
+        'bulan_surat'
     ];
 
 }

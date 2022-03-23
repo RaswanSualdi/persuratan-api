@@ -19,6 +19,7 @@ class CreateFormatsTable extends Migration
             $table->string('deskripsi');
             $table->string('slug');
             $table->date('tgl_surat');
+            $table->string('bulan_surat');
             $table->timestamps();
         });
     }

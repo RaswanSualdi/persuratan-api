@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class KodeSuratLembagaController extends Controller
 {
+    //mengakses data kodesuratlembaga menggunakan query param
     public function getAll(Request $request){
         $id = $request->input('id');
         $slug = $request->input('slug');  //slug hanya bisa diakses url menggunakan garis penghubu
