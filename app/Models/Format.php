@@ -11,6 +11,7 @@ class Format extends Model
     protected $fillable = [
         'format',
         'deskripsi',
+        'link',
         'tgl_surat',
         'slug',
         'bulan_surat'

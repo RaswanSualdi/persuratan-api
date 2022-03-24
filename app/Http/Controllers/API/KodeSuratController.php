@@ -1,16 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\Kodesurat;
 
 class KodeSuratController extends Controller
 {
+
+    public function indexKodeSurat(){
+        $kode = Kodesurat::all();
+        return ResponseFormatter::success($kode);
+    }
     //mengakses data kodesurat/jenis surat menggunakan query param
     public function getAll(Request $request){
         $id = $request->input('id');
-        $slug = $request->input('slug');  //slug hanya bisa diakses url menggunakan garis penghubu
+        
         if($id){
             $kodesurat = Kodesurat::find($id);
             if($kodesurat){
@@ -20,15 +26,7 @@ class KodeSuratController extends Controller
             }
         }
 
-        if($slug){
-            $kodesurat = Kodesurat::where('slug', $slug)->find($id);
-            if($kodesurat){
-                return ResponseFormatter::success($kodesurat, 'data berhasil diambil');
-            }else{
-                return ResponseFormatter::error(null, 'data tidak berhasil di ambil', 404);
-            }
-
-        }
+        
             
 
 

@@ -1,8 +1,7 @@
 <?php
-use App\Http\Controllers\FormatSuratController;
-
-use App\Http\Controllers\KodeSuratController;
-use App\Http\Controllers\KodeSuratLembagaController;
+use App\Http\Controllers\API\FormatSuratController;
+use App\Http\Controllers\API\KodeSuratController;
+use App\Http\Controllers\API\KodeSuratLembagaController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,3 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('format/{idkodesurat}/{idkodelembaga}',[FormatSuratController::class, 'format']);
 Route::get('kodesurat',[KodeSuratController::class,'getAll']);
 Route::get('kodesuratlembaga',[KodeSuratLembagaController::class,'getAll']);
+
+//index data
+Route::get('indexFormat',[FormatSuratController::class, 'indexFormat']);
+Route::get('indexKodeSurat',[KodeSuratController::class, 'indexKodeSurat']);
+Route::get('indexKodeSuratLembaga', [KodeSuratLembagaController::class, 'indexKodeSuratLembaga']);
+
