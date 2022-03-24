@@ -27,128 +27,173 @@ class FormatSuratController extends Controller
         // $thisMonth = '11'; => untuk testing bulan bukan sekarang
         $requestMonth = Carbon::parse($request->tgl_surat)->format('m');
         //untuk mengambil key id dan key bulan_surat yang ada pada model Format/ tabel format
-        $getId=Format::all('id','bulan_surat')->toArray();
+        $getId=Format::all('id','bulan_surat');
         // mengambil array yang mempunyai id terbesar pada table format
-        $getMaxId=max($getId);
-       
-        
-        //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
-        $tgl_surat = Carbon::now();  
-        //array asosiatif untuk mengubah bulan ke angka romawi
-        $geekmonths = [
-         '01'=>'I',
-         '02'=>'II',
-         '03'=>'III',
-         '04'=>'IV',
-         '05'=>'V',
-         '06'=>'VI',
-         '07'=>'VII',
-         '08' =>'VIII',
-         '09'=>'IX',
-         '10'=>'X',
-         '11'=> 'XI',
-         '12'=> 'XII'
-        ];
-        $geekmonth = $geekmonths[$requestMonth];
-        $strToSlug = Str::slug($request->deskripsi);
+        if(!$getId->isEmpty()){
+                        $getId=Format::all('id','bulan_surat')->toArray();
+                        $getMaxId=max($getId);
+                    //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
+                    $tgl_surat = Carbon::now();  
+                    //array asosiatif untuk mengubah bulan ke angka romawi
+                    $geekmonths = [
+                    '01'=>'I',
+                    '02'=>'II',
+                    '03'=>'III',
+                    '04'=>'IV',
+                    '05'=>'V',
+                    '06'=>'VI',
+                    '07'=>'VII',
+                    '08' =>'VIII',
+                    '09'=>'IX',
+                    '10'=>'X',
+                    '11'=> 'XI',
+                    '12'=> 'XII'
+                    ];
+                    $geekmonth = $geekmonths[$requestMonth];
+                    $strToSlug = Str::slug($request->deskripsi);
 
-         //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
-        //  $PassedMonthCount=Format::where('bulan_surat','<', $thisMonth)->pluck('id')->count();
-         $PresentMonthCount =Format::where('bulan_surat','=', $requestMonth)->pluck('id')->count()+1;
-         
-
-         //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
-        $kodesurat = Kodesurat::find($idkodesurat);
-        $kodelembaga = KodeSuratLembaga::find($idkodelembaga);
-       
-        //menghitung digit untuk business logic dari kode surat
-        $digit = strlen($PresentMonthCount);
-        
-        
-       
-    //business logic kode surat upana
-         if($digit ===1 ){
-            
-            if($getMaxId['bulan_surat']==$requestMonth){
-                $format = Format::create([
-                    'bulan_surat'=> $requestMonth,
-                    'format'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
-                    'deskripsi'=>$request->deskripsi,
-                    'link'=> $request->link,
-                    'tgl_surat'=>$tgl_surat,
-                    'slug'=> $strToSlug,
+                    //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
+                    //  $PassedMonthCount=Format::where('bulan_surat','<', $thisMonth)->pluck('id')->count();
+                    $PresentMonthCount =Format::where('bulan_surat','=', $requestMonth)->pluck('id')->count()+1;
                     
-                ]);
 
-            } elseif($getMaxId['bulan_surat']!=$requestMonth){
-                $format = Format::create([
-                    'bulan_surat'=> $requestMonth,
-                    'format'=>'No.00'. $PresentMonthCount . '/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
-                    'deskripsi'=>$request->deskripsi,
-                    'link'=> $request->link,
-                    'tgl_surat'=>$tgl_surat,
-                    'slug'=> $strToSlug,
+                    //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
+                    $kodesurat = Kodesurat::find($idkodesurat);
+                    $kodelembaga = KodeSuratLembaga::find($idkodelembaga);
+                
+                    //menghitung digit untuk business logic dari kode surat
+                    $digit = strlen($PresentMonthCount);
                     
-                ]);
-            }
-    
-           
-        }elseif($digit===2){
-            
-            if($getMaxId['bulan_surat']==$requestMonth){
-                $format = Format::create([
-                    'format'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
-                    'deskripsi'=>$request->deskripsi,
-                    'link'=> $request->link,
-                    'tgl_surat'=>$tgl_surat,
-                    'slug'=> $strToSlug,
-                    'bulan_surat'=> $requestMonth
-                ]);
-            }
+                    
+                
+                //business logic kode surat upana
+                    if($digit ===1 ){
+                        
+                        if($getMaxId['bulan_surat']==$requestMonth){
+                            $format = Format::create([
+                                'bulan_surat'=> $requestMonth,
+                                'format'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                                'deskripsi'=>$request->deskripsi,
+                                'link'=> $request->link,
+                                'tgl_surat'=>$tgl_surat,
+                                'slug'=> $strToSlug,
+                                
+                            ]);
 
-            elseif($getMaxId['bulan_surat']!=$requestMonth){
-                $format = Format::create([
-                    'bulan_surat'=> $requestMonth,
-                    'format'=>'No.0'. $PresentMonthCount .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
-                    'deskripsi'=>$request->deskripsi,
-                    'link'=> $request->link,
-                    'tgl_surat'=>$tgl_surat,
-                    'slug'=> $strToSlug,
+                        } elseif($getMaxId['bulan_surat']!=$requestMonth){
+                            $format = Format::create([
+                                'bulan_surat'=> $requestMonth,
+                                'format'=>'No.00'. $PresentMonthCount . '/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                                'deskripsi'=>$request->deskripsi,
+                                'link'=> $request->link,
+                                'tgl_surat'=>$tgl_surat,
+                                'slug'=> $strToSlug,
+                                
+                            ]);
+                        }
+                
                     
-                ]);
-            }
-           
-        }else{
-            
-            if($getMaxId['bulan_surat']==$requestMonth){
-                $format = Format::create([
-                    'format'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
-                    'deskripsi'=>$request->deskripsi,
-                    'tgl_surat'=>$tgl_surat,
-                    'link'=> $request->link,
-                    'slug'=> $strToSlug,
-                    'bulan_surat'=> $requestMonth
-                ]);
-            }
+                    }elseif($digit===2){
+                        
+                        if($getMaxId['bulan_surat']==$requestMonth){
+                            $format = Format::create([
+                                'format'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                                'deskripsi'=>$request->deskripsi,
+                                'link'=> $request->link,
+                                'tgl_surat'=>$tgl_surat,
+                                'slug'=> $strToSlug,
+                                'bulan_surat'=> $requestMonth
+                            ]);
+                        }
 
-            elseif($getMaxId['bulan_surat']!=$requestMonth){
-                $format = Format::create([
-                    'bulan_surat'=> $requestMonth,
-                    'format'=>'No.'. $PresentMonthCount .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
-                    'deskripsi'=>$request->deskripsi,
-                    'link'=> $request->link,
-                    'tgl_surat'=>$tgl_surat,
-                    'slug'=> $strToSlug,
+                        elseif($getMaxId['bulan_surat']!=$requestMonth){
+                            $format = Format::create([
+                                'bulan_surat'=> $requestMonth,
+                                'format'=>'No.0'. $PresentMonthCount .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                                'deskripsi'=>$request->deskripsi,
+                                'link'=> $request->link,
+                                'tgl_surat'=>$tgl_surat,
+                                'slug'=> $strToSlug,
+                                
+                            ]);
+                        }
                     
-                ]);
-            }
+                    }else{
+                        
+                        if($getMaxId['bulan_surat']==$requestMonth){
+                            $format = Format::create([
+                                'format'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                                'deskripsi'=>$request->deskripsi,
+                                'tgl_surat'=>$tgl_surat,
+                                'link'=> $request->link,
+                                'slug'=> $strToSlug,
+                                'bulan_surat'=> $requestMonth
+                            ]);
+                        }
+
+                        elseif($getMaxId['bulan_surat']!=$requestMonth){
+                            $format = Format::create([
+                                'bulan_surat'=> $requestMonth,
+                                'format'=>'No.'. $PresentMonthCount .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                                'deskripsi'=>$request->deskripsi,
+                                'link'=> $request->link,
+                                'tgl_surat'=>$tgl_surat,
+                                'slug'=> $strToSlug,
+                                
+                            ]);
+                        }
             
         }
-        
-
         return ResponseFormatter::success($format);
+    }elseif($getId->isEmpty()){
+                //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
+                $tgl_surat = Carbon::now();  
+                //array asosiatif untuk mengubah bulan ke angka romawi
+                $geekmonths = [
+                '01'=>'I',
+                '02'=>'II',
+                '03'=>'III',
+                '04'=>'IV',
+                '05'=>'V',
+                '06'=>'VI',
+                '07'=>'VII',
+                '08' =>'VIII',
+                '09'=>'IX',
+                '10'=>'X',
+                '11'=> 'XI',
+                '12'=> 'XII'
+                ];
+                $geekmonth = $geekmonths[$requestMonth];
+                $strToSlug = Str::slug($request->deskripsi);
 
+                //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
+                //  $PassedMonthCount=Format::where('bulan_surat','<', $thisMonth)->pluck('id')->count();
+                $PresentMonthCount =Format::where('bulan_surat','=', $requestMonth)->pluck('id')->count()+1;
+                
+
+                //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
+                $kodesurat = Kodesurat::find($idkodesurat);
+                $kodelembaga = KodeSuratLembaga::find($idkodelembaga);
+            
+                //menghitung digit untuk business logic dari kode surat
+                $digit = strlen($PresentMonthCount);
+                
+                
+            
+            //business logic kode surat upana
+            $format = Format::create([
+                'bulan_surat'=> $requestMonth,
+                'format'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
+                'deskripsi'=>$request->deskripsi,
+                'link'=> $request->link,
+                'tgl_surat'=>$tgl_surat,
+                'slug'=> $strToSlug,
+                
+            ]);
+            return ResponseFormatter::success($format);
     }
+
+}
 
     //mengakses data format menggunakan query param
 
