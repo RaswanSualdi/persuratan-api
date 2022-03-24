@@ -219,4 +219,18 @@ class FormatSuratController extends Controller
 
         }
     }
+
+    public function updateFormat(FormatSuratRequest $request, $idformat){
+        $format = Format::find($idformat);
+        if(!$format){
+            return ResponseFormatter::error(null, 'data tidak ditemukan',404);
+        }
+
+        $data = $request->all();
+        $format->fill($data);
+        $format->save();
+
+        return ResponseFormatter::success($format, 'data berhasil diambil');
+    }
+
 }

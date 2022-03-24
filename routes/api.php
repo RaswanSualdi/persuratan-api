@@ -31,3 +31,6 @@ Route::get('indexFormat',[FormatSuratController::class, 'indexFormat']);
 Route::get('indexKodeSurat',[KodeSuratController::class, 'indexKodeSurat']);
 Route::get('indexKodeSuratLembaga', [KodeSuratLembagaController::class, 'indexKodeSuratLembaga']);
 
+//update data
+Route::post('updateFormat/{idformat}',[FormatSuratController::class, 'updateFormat']);
+
