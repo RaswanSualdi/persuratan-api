@@ -14,7 +14,7 @@ class KodeSuratController extends Controller
         return ResponseFormatter::success($kode);
     }
     //mengakses data kodesurat/jenis surat menggunakan query param
-    public function getAll(Request $request){
+    public function getDataById(Request $request){
         $id = $request->input('id');
         
         if($id){

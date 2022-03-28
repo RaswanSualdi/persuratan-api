@@ -17,20 +17,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+//post data
+Route::post('format/kode-surat/{idkodesurat}/kode-lembaga/{idkodelembaga}',[FormatSuratController::class, 'format']);
+
+// get data by id
+Route::get('/kode-surat',[KodeSuratController::class,'getDataById']);
+Route::get('/kode-surat-lembaga',[KodeSuratLembagaController::class,'getDataById']);
+
+
+//index data
+Route::prefix('index')->group(function (){
+    Route::get('/format-surat',[FormatSuratController::class, 'indexFormat']);
+    Route::get('/kode-surat',[KodeSuratController::class, 'indexKodeSurat']);
+    Route::get('/kode-surat-lembaga', [KodeSuratLembagaController::class, 'indexKodeSuratLembaga']); 
 });
 
 
-Route::post('format/{idkodesurat}/{idkodelembaga}',[FormatSuratController::class, 'format']);
-Route::get('kodesurat',[KodeSuratController::class,'getAll']);
-Route::get('kodesuratlembaga',[KodeSuratLembagaController::class,'getAll']);
-
-//index data
-Route::get('indexFormat',[FormatSuratController::class, 'indexFormat']);
-Route::get('indexKodeSurat',[KodeSuratController::class, 'indexKodeSurat']);
-Route::get('indexKodeSuratLembaga', [KodeSuratLembagaController::class, 'indexKodeSuratLembaga']);
-
 //update data
-Route::post('updateFormat/{idformat}',[FormatSuratController::class, 'updateFormat']);
+Route::post('update/format-surat/{idformat}',[FormatSuratController::class, 'updateFormat']);
 

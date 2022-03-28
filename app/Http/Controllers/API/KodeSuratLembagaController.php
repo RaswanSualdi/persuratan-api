@@ -16,7 +16,7 @@ class KodeSuratLembagaController extends Controller
 
 
     //mengakses data kodesuratlembaga menggunakan query param
-    public function getAll(Request $request){
+    public function getDataById(Request $request){
         $id = $request->input('id');
         
         if($id){
