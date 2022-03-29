@@ -13,18 +13,12 @@ use Illuminate\Support\Str;
 
 class FormatSuratController extends Controller
 {
-
-    public function indexFormat(){
-        $format = Format::paginate(8);
-        return ResponseFormatter::success($format);
-    }
     
-    
-    public function format(FormatSuratRequest $request, $idkodesurat, $idkodelembaga){
+    public function letter(FormatSuratRequest $request, $idletter){
          
         $year = Carbon::now()->format('y');
         // $thisMonth = Carbon::now()->format('m'); => berdasarkan tanggal sekarang
-        // $thisMonth = '11'; => untuk testing bulan bukan sekarang
+        // $thisMonth = '11';  //=> untuk testing bulan bukan sekarang
         $requestMonth = Carbon::parse($request->tgl_surat)->format('m');
         //untuk mengambil key id dan key bulan_surat yang ada pada model Format/ tabel format
         $getId=Format::all('id','bulan_surat');
@@ -33,7 +27,8 @@ class FormatSuratController extends Controller
                         $getId=Format::all('id','bulan_surat')->toArray();
                         $getMaxId=max($getId);
                     //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
-                    $tgl_surat = Carbon::now();  
+                    // $tgl_surat = Carbon::now();  
+                    $tgl_surat = Carbon::parse($request->tgl_surat);
                     //array asosiatif untuk mengubah bulan ke angka romawi
                     $geekmonths = [
                     '01'=>'I',
@@ -56,14 +51,12 @@ class FormatSuratController extends Controller
                    
                     $PresentMonthCount =Format::where('bulan_surat','=', $requestMonth)->pluck('id')->count()+1;
                     
-
-                    //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
-                    $kodesurat = Kodesurat::find($idkodesurat);
-                    $kodelembaga = KodeSuratLembaga::find($idkodelembaga);
-                   
-
                     
-                
+                    //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
+                    $idkodelembaga = $request->company;
+                    $kodesurat = Kodesurat::find($idletter);
+                    $kodelembaga = KodeSuratLembaga::find($idkodelembaga);
+    
                     //menghitung digit untuk business logic dari kode surat
                     $digit = strlen($PresentMonthCount);
                     
@@ -150,7 +143,7 @@ class FormatSuratController extends Controller
         return ResponseFormatter::success($format);
     }elseif($getId->isEmpty()){
                             //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
-                            $tgl_surat = Carbon::now();  
+                            $tgl_surat = Carbon::parse($request->tgl_surat);  
                             //array asosiatif untuk mengubah bulan ke angka romawi
                             $geekmonths = [
                             '01'=>'I',
@@ -173,9 +166,9 @@ class FormatSuratController extends Controller
                             //  $PassedMonthCount=Format::where('bulan_surat','<', $thisMonth)->pluck('id')->count();
                             $PresentMonthCount =Format::where('bulan_surat','=', $requestMonth)->pluck('id')->count()+1;
                             
-
+                            $idkodelembaga = $request->company;
                             //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
-                            $kodesurat = Kodesurat::find($idkodesurat);
+                            $kodesurat = Kodesurat::find($idletter);
                             $kodelembaga = KodeSuratLembaga::find($idkodelembaga);
                         
                             //menghitung digit untuk business logic dari kode surat
@@ -198,34 +191,49 @@ class FormatSuratController extends Controller
 
 }
 
-    //mengakses data format menggunakan query param
+   
 
-    public function getDataById(Request $request){
-                $id = $request->input('id');
-                
-                if($id){
-                    $formatsurat = Format::find($id);
-                    if($formatsurat){
-                        return ResponseFormatter::success($formatsurat, 'data berhasil diambil');
-                    }else{
-                        return ResponseFormatter::error(null, 'data tidak berhasil di ambil', 404);
+    public function all(Request $request){
+
+                    $id = $request->input('id');
+                    $format = $request->input('format');
+                    $slug = $request->input('slug');
+
+                    if($id){
+                        $formatsurat = Format::find($id);
+                        if($formatsurat){
+                            return ResponseFormatter::success($formatsurat, 'data berhasil diambil');
+                        }else{
+                            return ResponseFormatter::error(null, 'data tidak berhasil di ambil', 404);
+                        }
                     }
-                }
+                    if($format){
+                        $formatsurat = Format::where('format','like','%'.$format.'%')->get();
+                        return ResponseFormatter::success($formatsurat, 'data berhasil diambil');
+                    }
 
-              
+                    if($slug){
+                        $formatsurat = Format::where('slug','like','%'.$slug.'%')->get();
+                        return ResponseFormatter::success($formatsurat, 'data berhasil diambil');
+                    }
+                    $formatsurat = Format::paginate(8);
+                    return ResponseFormatter::success($formatsurat, 'data berhasil diambil',200);
+
+
     }
 
+
     public function updateFormat(FormatSuratRequest $request, $idformat){
-                $format = Format::find($idformat);
-                if(!$format){
-                    return ResponseFormatter::error(null, 'data tidak ditemukan',404);
+                    $format = Format::find($idformat);
+                    if(!$format){
+                        return ResponseFormatter::error(null, 'data tidak ditemukan',404);
+                    }
+
+                    $data = $request->all();
+                    $format->fill($data);
+                    $format->save();
+
+                    return ResponseFormatter::success($format, 'data berhasil diupdate');
                 }
-
-                $data = $request->all();
-                $format->fill($data);
-                $format->save();
-
-                return ResponseFormatter::success($format, 'data berhasil diupdate');
-            }
 
 }

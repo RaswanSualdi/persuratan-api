@@ -21,22 +21,21 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+
 //post data
-Route::post('format/kode-surat/{idkodesurat}/kode-lembaga/{idkodelembaga}',[FormatSuratController::class, 'format']);
-
-// get data by id
-Route::get('/kode-surat',[KodeSuratController::class,'getDataById']);
-Route::get('/kode-surat-lembaga',[KodeSuratLembagaController::class,'getDataById']);
-
+Route::post('letters/letter/{idletter}',[FormatSuratController::class, 'letter']);
+//update database
+Route::put('letters/letter/{idletter}',[FormatSuratController::class, 'updateFormat']);
 
 //index data
-Route::prefix('index')->group(function (){
-    Route::get('/format-surat',[FormatSuratController::class, 'indexFormat']);
-    Route::get('/kode-surat',[KodeSuratController::class, 'indexKodeSurat']);
-    Route::get('/kode-surat-lembaga', [KodeSuratLembagaController::class, 'indexKodeSuratLembaga']); 
+Route::prefix('md')->group(function (){
+    Route::get('/letters',[KodeSuratController::class, 'all']);
+    Route::get('/companies', [KodeSuratLembagaController::class, 'all']); 
 });
 
+Route::get('/letters',[FormatSuratController::class, 'all']);
 
-//update data
-Route::post('update/format-surat/{idformat}',[FormatSuratController::class, 'updateFormat']);
+
+
+
 

@@ -27,8 +27,8 @@ class FormatSuratRequest extends FormRequest
             'deskripsi'=>'required|min:10|max:155',
             'tgl_surat'=>'required|date',
             'link' => 'required',
-            // 'idkodesurat'=> 'required|integer',
-            // 'idkodelembaga'=>'required|integer'
+            'company'=> 'required|integer'
+           
             
 
         ];

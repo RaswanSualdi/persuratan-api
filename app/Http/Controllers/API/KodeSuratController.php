@@ -8,13 +8,8 @@ use App\Models\Kodesurat;
 
 class KodeSuratController extends Controller
 {
-
-    public function indexKodeSurat(){
-        $kode = Kodesurat::all();
-        return ResponseFormatter::success($kode);
-    }
-    //mengakses data kodesurat/jenis surat menggunakan query param
-    public function getDataById(Request $request){
+ 
+    public function all(Request $request){
         $id = $request->input('id');
         
         if($id){
@@ -26,10 +21,9 @@ class KodeSuratController extends Controller
             }
         }
 
+        $kodesurat = Kodesurat::paginate(8);
+        return ResponseFormatter::success($kodesurat, 'data berhasil diambil', 200);
         
-            
-
-
 
     }
 }

@@ -8,30 +8,21 @@ use Illuminate\Http\Request;
 
 class KodeSuratLembagaController extends Controller
 {
-
-    public function indexKodeSuratLembaga(){
-        $kode = KodeSuratLembaga::all();
-        return ResponseFormatter::success($kode);
-    }
-
-
-    //mengakses data kodesuratlembaga menggunakan query param
-    public function getDataById(Request $request){
+    public function all(Request $request){
         $id = $request->input('id');
         
         if($id){
-            $kodesurat = KodeSuratLembaga::find($id);
-            if($kodesurat){
-                return ResponseFormatter::success($kodesurat, 'data berhasil diambil');
+            $kodelembaga = KodeSuratLembaga::find($id);
+            if($kodelembaga){
+                return ResponseFormatter::success($kodelembaga, 'data berhasil diambil');
             }else{
                 return ResponseFormatter::error(null, 'data tidak berhasil di ambil', 404);
             }
-        }
+        } 
 
+        $kodelembaga = KodeSuratLembaga::paginate(8);
+        return ResponseFormatter::success($kodelembaga, 'data berhasil diambil',200);
         
-            
-
-
 
     }
 }
