@@ -68,6 +68,7 @@ class FormatSuratController extends Controller
                         if($getMaxId['bulan_surat']==$requestMonth){
                             $format = Format::create([
                                 'bulan_surat'=> $requestMonth,
+                                'kodesurat_id'=>$idletter,
                                 'format'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                                 'deskripsi'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -79,6 +80,7 @@ class FormatSuratController extends Controller
                         } elseif($getMaxId['bulan_surat']!=$requestMonth){
                             $format = Format::create([
                                 'bulan_surat'=> $requestMonth,
+                                'kodesurat_id'=>$idletter,
                                 'format'=>'No.00'. $PresentMonthCount . '/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                                 'deskripsi'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -95,6 +97,7 @@ class FormatSuratController extends Controller
                             $format = Format::create([
                                 'format'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                                 'deskripsi'=>$request->deskripsi,
+                                'kodesurat_id'=>$idletter,
                                 'link'=> $request->link,
                                 'tgl_surat'=>$tgl_surat,
                                 'slug'=> $strToSlug,
@@ -107,6 +110,7 @@ class FormatSuratController extends Controller
                                 'bulan_surat'=> $requestMonth,
                                 'format'=>'No.0'. $PresentMonthCount .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                                 'deskripsi'=>$request->deskripsi,
+                                'kodesurat_id'=>$idletter,
                                 'link'=> $request->link,
                                 'tgl_surat'=>$tgl_surat,
                                 'slug'=> $strToSlug,
@@ -120,6 +124,7 @@ class FormatSuratController extends Controller
                             $format = Format::create([
                                 'format'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                                 'deskripsi'=>$request->deskripsi,
+                                'kodesurat_id'=>$idletter,
                                 'tgl_surat'=>$tgl_surat,
                                 'link'=> $request->link,
                                 'slug'=> $strToSlug,
@@ -132,6 +137,7 @@ class FormatSuratController extends Controller
                                 'bulan_surat'=> $requestMonth,
                                 'format'=>'No.'. $PresentMonthCount .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                                 'deskripsi'=>$request->deskripsi,
+                                'kodesurat_id'=>$idletter,
                                 'link'=> $request->link,
                                 'tgl_surat'=>$tgl_surat,
                                 'slug'=> $strToSlug,
@@ -181,6 +187,7 @@ class FormatSuratController extends Controller
                             'bulan_surat'=> $requestMonth,
                             'format'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->kode.'/'.$kodesurat->kode.'/'.$geekmonth.'/20'.$year,
                             'deskripsi'=>$request->deskripsi,
+                            'kodesurat_id'=>$idletter,
                             'link'=> $request->link,
                             'tgl_surat'=>$tgl_surat,
                             'slug'=> $strToSlug,
@@ -235,5 +242,11 @@ class FormatSuratController extends Controller
 
                     return ResponseFormatter::success($format, 'data berhasil diupdate');
                 }
+
+    public function getFormat($idletter, $letter){
+         Kodesurat::find($idletter);
+        $formatsurat = Format::where('format','like','%'.$letter.'%')->get();
+        return ResponseFormatter::success($formatsurat, 'data berhasil diambil',200);
+    }
 
 }

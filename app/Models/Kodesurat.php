@@ -9,5 +9,8 @@ class Kodesurat extends Model
 {
     use HasFactory;
 
+    public function format(){
+        return $this->hasMany(Format::class,'kodesurat_id');
+    }
     
 }

@@ -34,6 +34,7 @@ Route::prefix('md')->group(function (){
 });
 
 Route::get('/letters',[FormatSuratController::class, 'all']);
+Route::get('/letters/{idletter}/{letter}', [FormatSuratController::class, 'getFormat']);
 
 
 

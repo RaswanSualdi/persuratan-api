@@ -14,7 +14,12 @@ class Format extends Model
         'link',
         'tgl_surat',
         'slug',
-        'bulan_surat'
+        'bulan_surat',
+        'kodesurat_id'
     ];
+
+    public function kodesurat(){
+        return $this->belongsTo(Kodesurat::class, 'kodesurat_id', 'id');
+    }
 
 }

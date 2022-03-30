@@ -15,6 +15,7 @@ class CreateFormatsTable extends Migration
     {
         Schema::create('formats', function (Blueprint $table) {
             $table->id();
+            $table->integer('kodesurat_id');
             $table->string('format');
             $table->string('deskripsi');
             $table->string('link');
