@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 //post data
 Route::post('letters/letter/{idletter}',[FormatSuratController::class, 'letter']);
+//get data
+Route::get('/letters',[FormatSuratController::class, 'all']);
+Route::get('/letters/letter/{idletter}', [FormatSuratController::class, 'getFormat']);
 //update database
 Route::put('letters/letter/{idletter}',[FormatSuratController::class, 'updateFormat']);
 
@@ -33,8 +36,8 @@ Route::prefix('md')->group(function (){
     Route::get('/companies', [KodeSuratLembagaController::class, 'all']); 
 });
 
-Route::get('/letters',[FormatSuratController::class, 'all']);
-Route::get('/letters/{idletter}/{letter}', [FormatSuratController::class, 'getFormat']);
+
+
 
 
 

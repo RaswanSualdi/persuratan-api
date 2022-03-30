@@ -243,10 +243,9 @@ class FormatSuratController extends Controller
                     return ResponseFormatter::success($format, 'data berhasil diupdate');
                 }
 
-    public function getFormat($idletter, $letter){
-         Kodesurat::find($idletter);
-        $formatsurat = Format::where('format','like','%'.$letter.'%')->get();
-        return ResponseFormatter::success($formatsurat, 'data berhasil diambil',200);
+    public function getFormat($idletter){
+                $formatsurat= Kodesurat::with('format')->find($idletter);
+                return ResponseFormatter::success($formatsurat, 'data berhasil diambil',200);
     }
 
 }
