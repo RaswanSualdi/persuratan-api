@@ -33,6 +33,7 @@ Route::put('letters/letter/{idletter}',[FormatSuratController::class, 'updateFor
 //index data
 Route::prefix('md')->group(function (){
     Route::get('/letters',[KodeSuratController::class, 'all']);
+    Route::get('/letters/search',[KodeSuratController::class, 'searchKodeSurat']);
     Route::get('/companies', [KodeSuratLembagaController::class, 'all']); 
 });
 

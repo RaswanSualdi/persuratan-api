@@ -28,4 +28,20 @@ class KodeSuratController extends Controller
         
 
     }
+
+    public function searchKodeSurat(Request $request){
+
+        $searchkode = $request->input('kode');
+        $searchslug = $request->input('slug');
+        if($searchkode){
+            $data = Kodesurat::where('kode', 'like','%'.$searchkode.'%')->first();
+            return ResponseFormatter::success($data,'data berhasil diambil',200);
+        }
+
+        if($searchslug){
+            $data = Kodesurat::where('slug', 'like','%'.$searchslug.'%')->first();
+            return ResponseFormatter::success($data,'data berhasil diambil',200);
+        }
+       
+    }
 }

@@ -248,4 +248,8 @@ class FormatSuratController extends Controller
                 return ResponseFormatter::success($formatsurat, 'data berhasil diambil',200);
     }
 
+    public function formatFilter(){
+                
+    }
+
 }
