@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\KodeSuratLembaga;
 use Illuminate\Http\Request;
 
-class KodeSuratLembagaController extends Controller
+class MdCompaniesController extends Controller
 {
     public function all(Request $request){
         $id = $request->input('id');

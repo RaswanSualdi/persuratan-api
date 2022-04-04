@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class KodeSuratLembagaSeeder extends Seeder
+class MdCompaniesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,24 +14,24 @@ class KodeSuratLembagaSeeder extends Seeder
      */
     public function run()
     {
-        $kodeSuratLembaga = [
+        $md_companies = [
             [
-            'nama_lembaga'=> 'Upana Studio International',
-            'kode'=>'USI',
+            'companies'=> 'Upana Studio International',
+            'letter'=>'USI',
             'slug'=> 'upana-studio-makassar',
             'created_at'=> null,
             'updated_at'=> null,
             ],
 
             [
-            'nama_lembaga'=> 'Upana Studio International',
-            'kode'=>'UPAA',
+            'companies'=> 'Upana Studio International',
+            'letter'=>'UPAA',
             'slug'=> 'upana-studio-makassar',
             'created_at'=> null,
             'updated_at'=> null,
             ]
     ];
 
-    DB::table('kode_surat_lembagas')->insert($kodeSuratLembaga);
+    DB::table('md_companies')->insert($md_companies);
     }
 }

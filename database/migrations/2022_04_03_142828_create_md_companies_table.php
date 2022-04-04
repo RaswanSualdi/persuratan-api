@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKodeSuratLembagasTable extends Migration
+class CreateMdCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateKodeSuratLembagasTable extends Migration
      */
     public function up()
     {
-        Schema::create('kode_surat_lembagas', function (Blueprint $table) {
+        Schema::create('md_companies', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_lembaga');
-            $table->string('kode');
+            $table->string('companies');  
+            $table->string('letter');
             $table->string('slug');
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateKodeSuratLembagasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kode_surat_lembagas');
+        Schema::dropIfExists('md_companies');
     }
 }

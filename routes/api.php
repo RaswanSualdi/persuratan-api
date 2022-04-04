@@ -1,5 +1,5 @@
 <?php
-use App\Http\Controllers\API\FormatSuratController;
+use App\Http\Controllers\API\LettersController;
 use App\Http\Controllers\API\KodeSuratController;
 use App\Http\Controllers\API\KodeSuratLembagaController;
 
@@ -23,12 +23,15 @@ use Illuminate\Support\Facades\Route;
 
 
 //post data
-Route::post('letters/letter/{idletter}',[FormatSuratController::class, 'letter']);
+Route::post('letters/letter/{idletter}',[LettersController::class, 'letter']);
 //get data
-Route::get('/letters',[FormatSuratController::class, 'all']);
-Route::get('/letters/letter/{idletter}', [FormatSuratController::class, 'getFormat']);
+// Route::get('/letters',[FormatSuratController::class, 'all']);
+// Route::get('/letters/{idletter}', [FormatSuratController::class, 'getFormat']);
+Route::get('/letters', [LettersController::class, 'filter']);
+// Route::get('/letters', [FormatSuratController::class, 'indexKodeSurat']);
+
 //update database
-Route::put('letters/letter/{idletter}',[FormatSuratController::class, 'updateFormat']);
+Route::put('letters/letter/{idletter}',[LettersController::class, 'updateFormat']);
 
 //index data
 Route::prefix('md')->group(function (){

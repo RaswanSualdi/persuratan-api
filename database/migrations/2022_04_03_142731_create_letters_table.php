@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFormatsTable extends Migration
+class CreateLettersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateFormatsTable extends Migration
      */
     public function up()
     {
-        Schema::create('formats', function (Blueprint $table) {
+        Schema::create('letters', function (Blueprint $table) {
             $table->id();
-            $table->integer('kodesurat_id');
-            $table->string('format');
-            $table->string('deskripsi');
+            $table->integer('md_letters_id');
+            $table->string('letter');
+            $table->string('description');
             $table->string('link');
             $table->string('slug');
-            $table->date('tgl_surat');
-            $table->string('bulan_surat');
+            $table->date('date_letter');
+            $table->string('month_letter');
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateFormatsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('formats');
+        Schema::dropIfExists('letters');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
-
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use App\Models\Kodesurat;
 use App\Models\Format;
@@ -17,7 +17,7 @@ class KodeSuratController extends Controller
         if($id){
             $kodesurat = Kodesurat::find($id);
             if($kodesurat){
-                return ResponseFormatter::success($kodesurat, 'data berhasil diambil');
+                return ResponseFormatter::success($kodesurat, 'data berhasil diambil',Response::HTTP_OK);
             }else{
                 return ResponseFormatter::error(null, 'data tidak berhasil di ambil', 404);
             }
@@ -35,12 +35,18 @@ class KodeSuratController extends Controller
         $searchslug = $request->input('slug');
         if($searchkode){
             $data = Kodesurat::where('kode', 'like','%'.$searchkode.'%')->first();
-            return ResponseFormatter::success($data,'data berhasil diambil',200);
+            if($data){
+                return ResponseFormatter::success($data,'data berhasil diambil',200);
+            }
+            
         }
 
         if($searchslug){
             $data = Kodesurat::where('slug', 'like','%'.$searchslug.'%')->first();
-            return ResponseFormatter::success($data,'data berhasil diambil',200);
+            if($data){
+                return ResponseFormatter::success($data,'data berhasil diambil',200);
+            }
+           
         }
        
     }
