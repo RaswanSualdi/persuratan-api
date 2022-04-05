@@ -208,7 +208,7 @@ class LettersController extends Controller
                                 'date_letter'=>$tgl_surat,
                                 'slug'=> $strToSlug,
                                 
-                            
+                        
                         ]);
                         return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED);
     }
