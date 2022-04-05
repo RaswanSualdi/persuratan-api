@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+// Route::get('/letters', [LettersController::class, 'all']);
 
 //post data
 Route::post('/letters',[LettersController::class, 'addLetter']);
 //get data
-Route::get('/letters', [LettersController::class, 'all']);
 //update database
 Route::put('letters/letter/{idletter}',[LettersController::class, 'updateFormat']);
 
