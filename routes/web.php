@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('format',[FormatSuratController::class, 'format']);
+// Route::get('format',[FormatSuratController::class, 'format']);

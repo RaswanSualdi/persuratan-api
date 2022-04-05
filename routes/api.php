@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\API\LettersController;
-use App\Http\Controllers\API\KodeSuratController;
-use App\Http\Controllers\API\KodeSuratLembagaController;
+// use App\Http\Controllers\API\KodeSuratController;
+// use App\Http\Controllers\API\KodeSuratLembagaController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,22 +23,13 @@ use Illuminate\Support\Facades\Route;
 
 
 //post data
-Route::post('letters/letter/{idletter}',[LettersController::class, 'letter']);
+Route::post('/letters',[LettersController::class, 'addLetter']);
 //get data
-// Route::get('/letters',[FormatSuratController::class, 'all']);
-// Route::get('/letters/{idletter}', [FormatSuratController::class, 'getFormat']);
-Route::get('/letters', [LettersController::class, 'filter']);
-// Route::get('/letters', [FormatSuratController::class, 'indexKodeSurat']);
-
+Route::get('/letters', [LettersController::class, 'all']);
 //update database
-Route::put('letters/letter/{idletter}',[LettersController::class, 'updateFormat']);
+// Route::put('letters/letter/{idletter}',[LettersController::class, 'updateFormat']);
 
-//index data
-Route::prefix('md')->group(function (){
-    Route::get('/letters',[KodeSuratController::class, 'all']);
-    Route::get('/letters/search',[KodeSuratController::class, 'searchKodeSurat']);
-    Route::get('/companies', [KodeSuratLembagaController::class, 'all']); 
-});
+
 
 
 

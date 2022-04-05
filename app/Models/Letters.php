@@ -22,4 +22,6 @@ class Letters extends Model
     public function md_letters(){
         return $this->belongsTo(Md_letters::class,'md_letters_id','id');
     }
+
+  
 }
