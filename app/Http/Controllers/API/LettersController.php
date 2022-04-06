@@ -260,7 +260,11 @@ class LettersController extends Controller
             return $letters->get();
         }
 
-        
+        //jumlah jenis surat yang ingin ditampilkan
+         if($request->has('data')){
+                    $kodesurat =Md_letters::offset(0)->limit($request->input('data'))->get();
+                    return ResponseFormatter::success($kodesurat, 'data berhasil diambil',Response::HTTP_OK);
+        }
 
         return Md_letters::paginate(10);
                 
