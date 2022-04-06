@@ -23,9 +23,10 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class LettersController extends Controller
 {
-    
-    public function addLetter(FormatSuratRequest $request, Request $req){
-         if($req->has('id')){
+
+    public function addLetter(Request $req, FormatSuratRequest $request){
+        $id = $req->input('id');
+         if($id){
 
          
         $year = Carbon::now()->format('y');
@@ -68,7 +69,7 @@ class LettersController extends Controller
                     
                     //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
                     $idkodelembaga = $request->company;
-                    $kodesurat = Md_letters::find($req->input('id'));
+                    $kodesurat = Md_letters::find($id);
                     $kodelembaga = Md_companies::find($idkodelembaga);
     
                     //menghitung digit untuk business logic dari kode surat
@@ -82,7 +83,7 @@ class LettersController extends Controller
                         if($getMaxId['month_letter']==$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
-                                'md_letters_id'=>$req->input('id'),
+                                'md_letters_id'=>$id,
                                 'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -94,7 +95,7 @@ class LettersController extends Controller
                         } elseif($getMaxId['month_letter']!=$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
-                                'md_letters_id'=>$req->input('id'),
+                                'md_letters_id'=>$id,
                                 'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -110,7 +111,7 @@ class LettersController extends Controller
                         if($getMaxId['month_letter']==$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
-                                'md_letters_id'=>$req->input('id'),
+                                'md_letters_id'=>$id,
                                 'letter'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -122,7 +123,7 @@ class LettersController extends Controller
                         elseif($getMaxId['month_letter']!=$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
-                                'md_letters_id'=>$req->input('id'),
+                                'md_letters_id'=>$id,
                                 'letter'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -137,7 +138,7 @@ class LettersController extends Controller
                         if($getMaxId['month_letter']==$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
-                                'md_letters_id'=>$req->input('id'),
+                                'md_letters_id'=>$id,
                                 'letter'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -149,7 +150,7 @@ class LettersController extends Controller
                         elseif($getMaxId['month_letter']!=$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
-                                'md_letters_id'=>$req->input('id'),
+                                'md_letters_id'=>$id,
                                 'letter'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -190,7 +191,7 @@ class LettersController extends Controller
                             
                             $idkodelembaga = $request->company;
                             //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
-                            $kodesurat = Md_letters::find($req->input('id'));
+                            $kodesurat = Md_letters::find($id);
                             $kodelembaga = Md_companies::find($idkodelembaga);
                         
                             //menghitung digit untuk business logic dari kode surat
@@ -201,7 +202,7 @@ class LettersController extends Controller
                         
                         $format = Letters::create([
                             'month_letter'=> $requestMonth,
-                                'md_letters_id'=>$req->input('id'),
+                                'md_letters_id'=>$id,
                                 'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
