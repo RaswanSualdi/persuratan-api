@@ -25,7 +25,7 @@ class FormatSuratRequest extends FormRequest
     {
         return [
             'deskripsi'=>'required|min:10|max:155',
-            'tgl_surat'=>'required|date',
+            'tgl_surat'=>'required',
             'link' => 'required|min:10|max:155',
             'company'=> 'required|integer'
            

@@ -11,6 +11,7 @@ use App\Http\Resources\FormatSuratResource;
 use App\Models\Letters;
 use App\Models\Md_companies;
 use App\Models\Md_letters;
+use DateTime;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -29,13 +30,11 @@ class LettersController extends Controller
          if($id){
 
          
-        $year = Carbon::now()->format('y');
-        // $thisMonth = Carbon::now()->format('m'); => berdasarkan tanggal sekarang
-        // $thisMonth = '11';  //=> untuk testing bulan bukan sekarang
-        // $requestMonth = Carbon::parse($request->tgl_surat)->format('m');
+        $year = Carbon::parse($request->tgl_surat)->format('y');
+        
         $requestMonth = Carbon::parse($request->tgl_surat)->format('m');
+
         //untuk mengambil key id dan key bulan_surat yang ada pada model Format/ tabel format
-        // $getId=Format::all('id','bulan_surat');
         $getId=Letters::all('id','month_letter');
         // mengambil array yang mempunyai id terbesar pada table format
         if(!$getId->isEmpty()){
