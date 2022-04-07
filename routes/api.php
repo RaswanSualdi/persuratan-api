@@ -21,7 +21,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/letters', [LettersController::class, 'all']);
+Route::get('/letters/{letter}', [LettersController::class, 'filter']);
+Route::get('/letters',[LettersController::class, 'index']);
+
 
 //post data
 Route::post('/letters',[LettersController::class, 'addLetter']);

@@ -230,49 +230,41 @@ class LettersController extends Controller
                     return ResponseFormatter::success($format, 'data berhasil diupdate',Response::HTTP_OK);
                 }
 
-    // public function getFormat($req->input('id')){
-    //             $formatsurat= Kodesurat::with('format')->find($idletter);
-    //             return ResponseFormatter::success($formatsurat, 'data berhasil diambil',200);
-    // }
 
-    public function all(Request $request){
-
-        $letters = (new Letters)->NewQuery();
+    public function index(Request $request){
         $mdletters = (new Md_letters)->query();
 
-        if($request->has('search')){
-            return $mdletters->where('kind_letter','like','%'.$request->input('search').'%')->get();
-        }
+        if($request->has('data')){
+            $data =Md_letters::offset(0)->limit($request->input('data'))->get();
+            return ResponseFormatter::success($data, 'data berhasil diambil',Response::HTTP_OK);
+            }
 
-        if ($request->has('id')&&$request->has('query')){
-            $letters->whereHas('md_letters',function($query) use($request){
-                $query->where('id', $request->input('id'));
-            })->where('description','like','%'. $request->input('query').'%');
-            return $letters->get();
-        }
+            if($request->has('search')){
+                return $mdletters->where('kind_letter','like','%'.$request->input('search').'%')->get();
+            }
 
-
-       
-        if($request->has('id')){
-            $letters->whereHas('md_letters', function($query) use($request){
-                $query->where('id',$request->input('id'));
-            });
-            return $letters->get();
-        }
-
-        //jumlah jenis surat yang ingin ditampilkan
-         if($request->has('data')){
-                    $kodesurat =Md_letters::offset(0)->limit($request->input('data'))->get();
-                    return ResponseFormatter::success($kodesurat, 'data berhasil diambil',Response::HTTP_OK);
-        }
-
+        
         return Md_letters::paginate(10);
-                
-                
-                
-               
+
     }
 
+    public function filter(Request $request, $letter){
 
+        $letters = (new Letters)->NewQuery();
+        
 
+        
+
+        if ($request->has('search')){
+            $letters->whereHas('md_letters',function($query) use($letter){
+                $query->where('letter', '=', $letter);
+            })->where('description','like','%'. $request->input('search').'%');
+            return $letters->get();
+        }
+
+     return $letters->whereHas('md_letters',function($query) use($letter){
+        $query->where('letter', '=',$letter);
+    })->get();
+
+   }
 }
