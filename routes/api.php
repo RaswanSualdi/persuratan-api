@@ -20,14 +20,11 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
-Route::get('/letters/{letter}', [LettersController::class, 'filter']);
-Route::get('/letters',[LettersController::class, 'index']);
-
-
-//post data
-Route::post('/letters',[LettersController::class, 'addLetter']);
 //get data
+Route::get('/letters/{id}', [LettersController::class, 'filter']);
+Route::get('/letters',[LettersController::class, 'index']);
+//post data
+Route::post('/letters/{id}',[LettersController::class, 'addLetter']);
 //update database
 Route::put('letters/letter/{idletter}',[LettersController::class, 'updateFormat']);
 

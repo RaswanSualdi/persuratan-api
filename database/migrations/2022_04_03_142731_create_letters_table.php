@@ -21,6 +21,7 @@ class CreateLettersTable extends Migration
             $table->string('link');
             $table->string('slug');
             $table->date('date_letter');
+            $table->string('year_letter');
             $table->string('month_letter');
             $table->timestamps();
         });

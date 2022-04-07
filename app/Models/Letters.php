@@ -15,7 +15,8 @@ class Letters extends Model
         'date_letter',
         'slug',
         'month_letter',
-        'md_letters_id'
+        'md_letters_id',
+        'year_letter'
 
     ];
 

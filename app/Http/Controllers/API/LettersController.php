@@ -25,12 +25,13 @@ use Spatie\QueryBuilder\QueryBuilder;
 class LettersController extends Controller
 {
 
-    public function addLetter(Request $req, FormatSuratRequest $request){
-        $id = $req->input('id');
-         if($id){
+    public function addLetter(Request $req, FormatSuratRequest $request, $id){
+        
+         
 
          
         $year = Carbon::parse($request->tgl_surat)->format('y');
+        
         
         $requestMonth = Carbon::parse($request->tgl_surat)->format('m');
 
@@ -63,7 +64,7 @@ class LettersController extends Controller
 
                     //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
                    
-                    $PresentMonthCount =Letters::where('month_letter','=', $requestMonth)->pluck('id')->count()+1;
+                    $PresentMonthCount =Letters::where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->pluck('id')->count()+1;
                     
                     
                     //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
@@ -82,6 +83,7 @@ class LettersController extends Controller
                         if($getMaxId['month_letter']==$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
+                                'year_letter'=> $year,
                                 'md_letters_id'=>$id,
                                 'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -94,6 +96,7 @@ class LettersController extends Controller
                         } elseif($getMaxId['month_letter']!=$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
+                                'year_letter'=> $year,
                                 'md_letters_id'=>$id,
                                 'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -110,6 +113,7 @@ class LettersController extends Controller
                         if($getMaxId['month_letter']==$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
+                                'year_letter'=> $year,
                                 'md_letters_id'=>$id,
                                 'letter'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -122,6 +126,7 @@ class LettersController extends Controller
                         elseif($getMaxId['month_letter']!=$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
+                                'year_letter'=> $year,
                                 'md_letters_id'=>$id,
                                 'letter'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -137,6 +142,7 @@ class LettersController extends Controller
                         if($getMaxId['month_letter']==$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
+                                'year_letter'=> $year,
                                 'md_letters_id'=>$id,
                                 'letter'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -149,6 +155,7 @@ class LettersController extends Controller
                         elseif($getMaxId['month_letter']!=$requestMonth){
                             $format = Letters::create([
                                 'month_letter'=> $requestMonth,
+                                'year_letter'=> $year,
                                 'md_letters_id'=>$id,
                                 'letter'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -201,6 +208,7 @@ class LettersController extends Controller
                         
                         $format = Letters::create([
                             'month_letter'=> $requestMonth,
+                            'year_letter'=> $year,
                                 'md_letters_id'=>$id,
                                 'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -213,7 +221,7 @@ class LettersController extends Controller
                         return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED);
     }
 
-}
+
 
 }
 
@@ -248,22 +256,19 @@ class LettersController extends Controller
 
     }
 
-    public function filter(Request $request, $letter){
+    public function filter(Request $request, $id){
 
         $letters = (new Letters)->NewQuery();
         
-
-        
-
         if ($request->has('search')){
-            $letters->whereHas('md_letters',function($query) use($letter){
-                $query->where('letter', '=', $letter);
+            $letters->whereHas('md_letters',function($query) use($id){
+                $query->where('id', '=', $id);
             })->where('description','like','%'. $request->input('search').'%');
             return $letters->get();
         }
 
-     return $letters->whereHas('md_letters',function($query) use($letter){
-        $query->where('letter', '=',$letter);
+     return $letters->whereHas('md_letters',function($query) use($id){
+        $query->where('id', '=',$id);
     })->get();
 
    }
