@@ -1,5 +1,7 @@
 <?php
 use App\Http\Controllers\API\LettersController;
+use App\Http\Controllers\API\MdLettersController;
+
 // use App\Http\Controllers\API\KodeSuratController;
 // use App\Http\Controllers\API\KodeSuratLembagaController;
 
@@ -22,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 // });
 //get data
 Route::get('/letters/{id}', [LettersController::class, 'filter']);
-Route::get('/letters',[LettersController::class, 'index']);
+Route::get('/letters',[MdLettersController::class, 'all']);
 //post data
 Route::post('/letters/{id}',[LettersController::class, 'addLetter']);
 //update database

@@ -238,38 +238,20 @@ class LettersController extends Controller
                     return ResponseFormatter::success($format, 'data berhasil diupdate',Response::HTTP_OK);
                 }
 
-
-    public function index(Request $request){
-        $mdletters = (new Md_letters)->query();
-
-        if($request->has('data')){
-            $data =Md_letters::offset(0)->limit($request->input('data'))->get();
-            return ResponseFormatter::success($data, 'data berhasil diambil',Response::HTTP_OK);
-            }
-
-            if($request->has('search')){
-                return $mdletters->where('kind_letter','like','%'.$request->input('search').'%')->get();
-            }
-
-        
-        return Md_letters::paginate(10);
-
-    }
-
     public function filter(Request $request, $id){
 
-        $letters = (new Letters)->NewQuery();
-        
-        if ($request->has('search')){
-            $letters->whereHas('md_letters',function($query) use($id){
-                $query->where('id', '=', $id);
-            })->where('description','like','%'. $request->input('search').'%');
-            return $letters->get();
-        }
+                    $letters = (new Letters)->NewQuery();
+                    
+                    if ($request->has('search')){
+                        $letters->whereHas('md_letters',function($query) use($id){
+                            $query->where('id', '=', $id);
+                        })->where('description','like','%'. $request->input('search').'%');
+                        return $letters->paginate(5);
+                    }
 
-     return $letters->whereHas('md_letters',function($query) use($id){
-        $query->where('id', '=',$id);
-    })->get();
+                return $letters->whereHas('md_letters',function($query) use($id){
+                    $query->where('id', '=',$id);
+                })->paginate(10);
 
    }
 }
