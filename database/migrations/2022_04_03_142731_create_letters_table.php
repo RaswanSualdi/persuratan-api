@@ -23,6 +23,7 @@ class CreateLettersTable extends Migration
             $table->date('date_letter');
             $table->string('year_letter');
             $table->string('month_letter');
+            $table->string('no_letter');
             $table->timestamps();
         });
     }

@@ -85,6 +85,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'no_letter'=>'No.00'.$PresentMonthCount,
                                 'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -98,6 +99,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'no_letter'=>'No.00'.$PresentMonthCount,
                                 'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -115,6 +117,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'no_letter'=>'No.0'.$PresentMonthCount,
                                 'letter'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -128,6 +131,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'no_letter'=>'No.0'.$PresentMonthCount ,
                                 'letter'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -144,6 +148,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'no_letter'=>'No.'.$PresentMonthCount ,
                                 'letter'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -157,6 +162,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'no_letter'=>'No.'.$PresentMonthCount ,
                                 'letter'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -210,6 +216,7 @@ class LettersController extends Controller
                             'month_letter'=> $requestMonth,
                             'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'no_letter'=>'No.00'.$PresentMonthCount,
                                 'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
@@ -241,12 +248,13 @@ class LettersController extends Controller
     public function filter(Request $request, $id){
 
                     $letters = (new Letters)->NewQuery();
-                    
-                    if ($request->has('search')){
+                     $paginate = $request->input('data');
+
+                    if ($request->has('data')){
                         $letters->whereHas('md_letters',function($query) use($id){
                             $query->where('id', '=', $id);
                         })->where('description','like','%'. $request->input('search').'%');
-                        return $letters->paginate(5);
+                        return $letters->paginate($paginate);
                     }
 
                 return $letters->whereHas('md_letters',function($query) use($id){
