@@ -34,7 +34,7 @@ Route::get('/letters',[MdLettersController::class, 'all']);
 //post data
 Route::post('/letters/{id}',[LettersController::class, 'addLetter']);
 //update database
-Route::put('letters/letter/{idletter}',[LettersController::class, 'updateFormat']);
+Route::put('letters/letter/{idletter}/{id}',[LettersController::class, 'updateLetter']);
 
 // Route::group(['middleware' => ['auth:sanctum']], function () {
 //     Route::get('/profile', function(Request $request) {

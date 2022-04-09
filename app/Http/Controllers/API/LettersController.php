@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Http\Requests\FormatSuratRequest;
+use App\Http\Requests\RequestUpdateLetter;
 use App\Http\Resources\FormatSuratResource;
 use App\Models\Letters;
 use App\Models\Md_companies;
@@ -232,17 +233,209 @@ class LettersController extends Controller
 
 }
 
-    public function updateFormat(FormatSuratRequest $request, $idformat){
+    public function updateLetter(FormatSuratRequest $request, $idformat, $id){
                     $format = Letters::find($idformat);
+                    // $kodelembaga = Md_companies::find($idkodelembaga);
+
+
                     if(!$format){
                         return ResponseFormatter::error(null, 'data tidak ditemukan',404);
                     }
+                    $format->description = $request->deskripsi;
+                    $format->date_letter = $request->tgl_surat;
+                    $format->link = $request->link;
+                    $year = Carbon::parse($request->tgl_surat)->format('y');
+        
+        
+                    $requestMonth = Carbon::parse($request->tgl_surat)->format('m');
+            
+                    //untuk mengambil key id dan key bulan_surat yang ada pada model Format/ tabel format
+                    $getId=Letters::all('id','month_letter');
+                    // mengambil array yang mempunyai id terbesar pada table format
+                    if(!$getId->isEmpty()){
+                                    $getId=Letters::all('id','month_letter')->toArray();
+                                    $getMaxId=max($getId);
+                                //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
+                                // $tgl_surat = Carbon::now();  
+                                $tgl_surat = Carbon::parse($request->tgl_surat);
+                                //array asosiatif untuk mengubah bulan ke angka romawi
+                                $geekmonths = [
+                                '01'=>'I',
+                                '02'=>'II',
+                                '03'=>'III',
+                                '04'=>'IV',
+                                '05'=>'V',
+                                '06'=>'VI',
+                                '07'=>'VII',
+                                '08' =>'VIII',
+                                '09'=>'IX',
+                                '10'=>'X',
+                                '11'=> 'XI',
+                                '12'=> 'XII'
+                                ];
+                                $geekmonth = $geekmonths[$requestMonth];
+                                $strToSlug = Str::slug($request->deskripsi);
+            
+                                //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
+                               
+                                $PresentMonthCount =$format->where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->pluck('id')->count()+1;
+                                
+                                
+                                //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
+                                $idkodelembaga = $request->company;
+                                $kodesurat = Md_letters::find($id);
+                                $kodelembaga = Md_companies::find($idkodelembaga);
+                
+                                //menghitung digit untuk business logic dari kode surat
+                                $digit = strlen($PresentMonthCount);
+                                
+                                
+                            
+                            //business logic kode surat upana
+                                if($digit ===1 ){
+                                    
+                                    if($getMaxId['month_letter']==$requestMonth){
+                                        $format->update([
+                                            'month_letter'=> $requestMonth,
+                                            'year_letter'=> $year,
+                                            'md_letters_id'=>$id,
+                                            'no_letter'=>'No.00'.$PresentMonthCount,
+                                            'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
+                                            'description'=>$request->deskripsi,
+                                            'link'=> $request->link,
+                                            'date_letter'=>$tgl_surat,
+                                            'slug'=> $strToSlug,
+                                        ]);
+            
+                                    } elseif($getMaxId['month_letter']!=$requestMonth){
+                                        $format->update([
+                                            'month_letter'=> $requestMonth,
+                                            'year_letter'=> $year,
+                                            'md_letters_id'=>$id,
+                                            'no_letter'=>'No.00'.$PresentMonthCount,
+                                            'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
+                                            'description'=>$request->deskripsi,
+                                            'link'=> $request->link,
+                                            'date_letter'=>$tgl_surat,
+                                            'slug'=> $strToSlug,
+                                        ]);
+                                    }
+                            
+                                
+                                }elseif($digit===2){
+                                    
+                                    if($getMaxId['month_letter']==$requestMonth){
+                                        $format->update([
+                                            'month_letter'=> $requestMonth,
+                                            'year_letter'=> $year,
+                                            'md_letters_id'=>$id,
+                                            'no_letter'=>'No.0'.$PresentMonthCount,
+                                            'letter'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
+                                            'description'=>$request->deskripsi,
+                                            'link'=> $request->link,
+                                            'date_letter'=>$tgl_surat,
+                                            'slug'=> $strToSlug,
+                                        ]);
+                                    }
+            
+                                    elseif($getMaxId['month_letter']!=$requestMonth){
+                                        $format->update([
+                                            'month_letter'=> $requestMonth,
+                                            'year_letter'=> $year,
+                                            'md_letters_id'=>$id,
+                                            'no_letter'=>'No.0'.$PresentMonthCount,
+                                            'letter'=>'No.0'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
+                                            'description'=>$request->deskripsi,
+                                            'link'=> $request->link,
+                                            'date_letter'=>$tgl_surat,
+                                            'slug'=> $strToSlug,
+                                        ]);
+                                    }
+                                
+                                }else{
+                                    
+                                    if($getMaxId['month_letter']==$requestMonth){
+                                        $format->update([
+                                            'month_letter'=> $requestMonth,
+                                            'year_letter'=> $year,
+                                            'md_letters_id'=>$id,
+                                            'no_letter'=>'No.'.$PresentMonthCount,
+                                            'letter'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
+                                            'description'=>$request->deskripsi,
+                                            'link'=> $request->link,
+                                            'date_letter'=>$tgl_surat,
+                                            'slug'=> $strToSlug,
+                                        ]);
+                                    }
+            
+                                    elseif($getMaxId['month_letter']!=$requestMonth){
+                                        $format->update([
+                                            'month_letter'=> $requestMonth,
+                                            'year_letter'=> $year,
+                                            'md_letters_id'=>$id,
+                                            'no_letter'=>'No.'.$PresentMonthCount,
+                                            'letter'=>'No.'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
+                                            'description'=>$request->deskripsi,
+                                            'link'=> $request->link,
+                                            'date_letter'=>$tgl_surat,
+                                            'slug'=> $strToSlug,
+                                        ]);
+                                    }
+                        
+                    }
+                    
+            
+                    return ResponseFormatter::success($format,'data berhasil diupdate', Response::HTTP_OK);
+                }elseif($getId->isEmpty()){
+                                        //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
+                                        $tgl_surat = Carbon::parse($request->tgl_surat);  
+                                        //array asosiatif untuk mengubah bulan ke angka romawi
+                                        $geekmonths = [
+                                        '01'=>'I',
+                                        '02'=>'II',
+                                        '03'=>'III',
+                                        '04'=>'IV',
+                                        '05'=>'V',
+                                        '06'=>'VI',
+                                        '07'=>'VII',
+                                        '08' =>'VIII',
+                                        '09'=>'IX',
+                                        '10'=>'X',
+                                        '11'=> 'XI',
+                                        '12'=> 'XII'
+                                        ];
+                                        $geekmonth = $geekmonths[$requestMonth];
+                                        $strToSlug = Str::slug($request->deskripsi);
+            
+                                        //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
+                                        //  $PassedMonthCount=Format::where('bulan_surat','<', $thisMonth)->pluck('id')->count();
+                                        $PresentMonthCount =Letters::where('month_letter','=', $requestMonth)->pluck('id')->count()+1;
+                                        
+                                        $idkodelembaga = $request->company;
+                                        //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
+                                        $kodesurat = Md_letters::find($id);
+                                        $kodelembaga = Md_companies::find($idkodelembaga);
+                                    
+                                        //menghitung digit untuk business logic dari kode surat
+                                        $digit = strlen($PresentMonthCount);
+                                        
+                                        
+                                    
+                                        $format->update([
+                                            'month_letter'=> $requestMonth,
+                                            'year_letter'=> $year,
+                                            'md_letters_id'=>$id,
+                                            'no_letter'=>'No.00'.$PresentMonthCount,
+                                            'letter'=>'No.00'.$PresentMonthCount  .'/'.$kodelembaga->letter.'/'.$kodesurat->letter.'/'.$geekmonth.'/20'.$year,
+                                            'description'=>$request->deskripsi,
+                                            'link'=> $request->link,
+                                            'date_letter'=>$tgl_surat,
+                                            'slug'=> $strToSlug,
+                                        ]);
+                                    return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_OK);
+                }
+            
 
-                    $data = $request->all();
-                    $format->fill($data);
-                    $format->save();
-
-                    return ResponseFormatter::success($format, 'data berhasil diupdate',Response::HTTP_OK);
                 }
 
     public function filter(Request $request, $id){
