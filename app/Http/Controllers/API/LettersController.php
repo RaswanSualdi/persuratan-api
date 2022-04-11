@@ -451,14 +451,23 @@ class LettersController extends Controller
 
                     $letters = (new Letters)->NewQuery();
                      $paginate = $request->input('data');
+                    $dateFrom =  Carbon::parse($request->input('date_from'))->format('Y-m-d');
+                    $dateTo = Carbon::parse($request->input('date_to'))->format('Y-m-d');
+                   
 
-                    if ($request->has('data')){
+                    if ($request->has('search')){
                         $letters->whereHas('md_letters',function($query) use($id){
                             $query->where('id', '=', $id);
                         })->where('description','like','%'. $request->input('search').'%');
                         return $letters->paginate($paginate);
-                    }
-
+                          
+                       
+                    }      
+                    //filter data berdasarkan date range
+                        if($request->has('date_from')){
+                            return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->paginate($paginate);
+                        }
+                    
                 return $letters->whereHas('md_letters',function($query) use($id){
                     $query->where('id', '=',$id);
                 })->paginate(10);
