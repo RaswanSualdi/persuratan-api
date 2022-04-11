@@ -26,14 +26,12 @@ use Spatie\QueryBuilder\QueryBuilder;
 class LettersController extends Controller
 {
 
+  
+
     public function addLetter(Request $req, FormatSuratRequest $request, $id){
         
-         
-
-         
         $year = Carbon::parse($request->tgl_surat)->format('y');
-        
-        
+    
         $requestMonth = Carbon::parse($request->tgl_surat)->format('m');
 
         //untuk mengambil key id dan key bulan_surat yang ada pada model Format/ tabel format
@@ -64,20 +62,19 @@ class LettersController extends Controller
                     $strToSlug = Str::slug($request->deskripsi);
 
                     //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
-                   
-                    $PresentMonthCount =Letters::where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->pluck('id')->count()+1;
+                
+                    $PresentMonthCount = Letters::where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->pluck('id')->count()+1;
                     
                     
                     //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
                     $idkodelembaga = $request->company;
                     $kodesurat = Md_letters::find($id);
                     $kodelembaga = Md_companies::find($idkodelembaga);
+
     
                     //menghitung digit untuk business logic dari kode surat
                     $digit = strlen($PresentMonthCount);
                     
-                    
-                
                 //business logic kode surat upana
                     if($digit ===1 ){
                         
@@ -436,7 +433,19 @@ class LettersController extends Controller
                 }
             
 
-                }
+     }
+
+     public function deleteLetter($idletter,$id){
+         $letter = Letters::where('md_letters_id', '=', $idletter)->find($id);
+         $letters = Letters::where('md_letters_id', '=', $idletter)->pluck('letter');
+         if(!$letter){
+             return response()->json(['message'=>'data tidak ditemukan', 'code status'=>404]);
+         }
+
+         dd(str_split($letters[1][5]));
+        
+     
+     }
 
     public function filter(Request $request, $id){
 
