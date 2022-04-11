@@ -447,27 +447,33 @@ class LettersController extends Controller
      
      }
 
-    public function filter(Request $request, $id){
+    public function all(Request $request, $id){
 
                     $letters = (new Letters)->NewQuery();
                      $paginate = $request->input('data');
                     $dateFrom =  Carbon::parse($request->input('date_from'))->format('Y-m-d');
                     $dateTo = Carbon::parse($request->input('date_to'))->format('Y-m-d');
                    
-
+                    //search detail surat berdasarkan deskripsi 
                     if ($request->has('search')){
                         $letters->whereHas('md_letters',function($query) use($id){
                             $query->where('id', '=', $id);
                         })->where('description','like','%'. $request->input('search').'%');
                         return $letters->paginate($paginate);
-                          
-                       
                     }      
                     //filter data berdasarkan date range
                         if($request->has('date_from')){
                             return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->paginate($paginate);
                         }
-                    
+                    //filter berdasarkan surat lembaga
+                        if($request->has('company')){
+                            return $letters->where('letter','like','%'. $request->input('company').'%')->paginate($paginate);
+                        }
+                    //user menentukan jumlah data yang ingin didisplay
+                        if($request->has('data')){
+                            return $letters->paginate($paginate);
+                        }
+                  // ketika user tidak menentukan jumlah data yang ingin di display, maka secara default data yang akan ditampilkan adala 10 data  
                 return $letters->whereHas('md_letters',function($query) use($id){
                     $query->where('id', '=',$id);
                 })->paginate(10);
