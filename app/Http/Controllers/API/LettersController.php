@@ -173,7 +173,7 @@ class LettersController extends Controller
         }
         
 
-        return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED);
+        return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED)->header('Access-Control-Allow-Origin', '*');;
     }elseif($getId->isEmpty()){
                             //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
                             $tgl_surat = Carbon::parse($request->tgl_surat);  
@@ -223,7 +223,7 @@ class LettersController extends Controller
                                 
                         
                         ]);
-                        return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED);
+                        return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED)->header('Access-Control-Allow-Origin', '*');;
     }
 
 
