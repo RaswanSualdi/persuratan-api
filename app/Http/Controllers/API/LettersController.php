@@ -173,7 +173,7 @@ class LettersController extends Controller
         }
         
 
-        return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED)->header('Access-Control-Allow-Origin', '*');;
+        return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED);
     }elseif($getId->isEmpty()){
                             //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
                             $tgl_surat = Carbon::parse($request->tgl_surat);  
@@ -223,7 +223,7 @@ class LettersController extends Controller
                                 
                         
                         ]);
-                        return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED)->header('Access-Control-Allow-Origin', '*');;
+                        return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED);
     }
 
 
@@ -463,7 +463,7 @@ class LettersController extends Controller
                     }      
                     //filter data berdasarkan date range
                         if($request->has('date_from')){
-                            return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->paginate($paginate);
+                            return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('md_letters_id', $id)->paginate($paginate);
                         }
                     //filter berdasarkan surat lembaga
                         if($request->has('company')){
