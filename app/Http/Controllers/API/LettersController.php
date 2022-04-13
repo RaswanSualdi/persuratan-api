@@ -462,8 +462,18 @@ class LettersController extends Controller
                         return $letters->paginate($paginate);
                     }      
                     //filter data berdasarkan date range
-                        if($request->has('date_from')){
+                        if($request->has('date_from')&& $request->has('date_to')){
                             return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('md_letters_id', $id)->paginate($paginate);
+                        }
+
+                    //jika user hanya memilih date_from
+                        if($request->has('date_from')){
+                            return $letters->where('date_letter','=',$dateFrom)->get();
+                        }
+
+                    //jika user hanya memilih date_to 
+                        if($request->has('date_to')){
+                            return $letters->where('date_letter','=',$dateTo)->get();
                         }
                     //filter berdasarkan surat lembaga
                         if($request->has('company')){
