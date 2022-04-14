@@ -2,33 +2,35 @@
 
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
-
-
 use Symfony\Component\HttpFoundation\Response;
-
 use App\Http\Requests\FormatSuratRequest;
-use App\Http\Requests\RequestUpdateLetter;
-use App\Http\Resources\FormatSuratResource;
 use App\Models\Letters;
 use App\Models\Md_companies;
 use App\Models\Md_letters;
-use DateTime;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use phpDocumentor\Reflection\PseudoTypes\False_;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedInclude;
-use Spatie\QueryBuilder\QueryBuilder;
-// use Spatie\QueryBuilder\AllowedFilter;
+
 
 class LettersController extends Controller
 {
 
-  
+    protected $geekmonths = [
+        '01'=>'I',
+        '02'=>'II',
+        '03'=>'III',
+        '04'=>'IV',
+        '05'=>'V',
+        '06'=>'VI',
+        '07'=>'VII',
+        '08' =>'VIII',
+        '09'=>'IX',
+        '10'=>'X',
+        '11'=> 'XI',
+        '12'=> 'XII'
+        ];
 
-    public function addLetter(Request $req, FormatSuratRequest $request, $id){
+    public function addLetter(FormatSuratRequest $request, $id){
         
         $year = Carbon::parse($request->tgl_surat)->format('y');
     
@@ -39,31 +41,10 @@ class LettersController extends Controller
         // mengambil array yang mempunyai id terbesar pada table format
         if(!$getId->isEmpty()){
                         $getId=Letters::all('id','month_letter')->toArray();
-                        $getMaxId=max($getId);
-                    //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
-                    // $tgl_surat = Carbon::now();  
+                        $getMaxId=max($getId);  
                     $tgl_surat = Carbon::parse($request->tgl_surat);
-                    //array asosiatif untuk mengubah bulan ke angka romawi
-                    $geekmonths = [
-                    '01'=>'I',
-                    '02'=>'II',
-                    '03'=>'III',
-                    '04'=>'IV',
-                    '05'=>'V',
-                    '06'=>'VI',
-                    '07'=>'VII',
-                    '08' =>'VIII',
-                    '09'=>'IX',
-                    '10'=>'X',
-                    '11'=> 'XI',
-                    '12'=> 'XII'
-                    ];
-                    $geekmonth = $geekmonths[$requestMonth];
+                    $geekmonth = $this->geekmonths[$requestMonth];
                     $strToSlug = Str::slug($request->deskripsi);
-
-                  
-                    
-                    
                     //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
                     $idkodelembaga = $request->company;
                     $kodesurat = Md_letters::find($id);
@@ -185,24 +166,8 @@ class LettersController extends Controller
     }elseif($getId->isEmpty()){
                             //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
                             $tgl_surat = Carbon::parse($request->tgl_surat);  
-                            //array asosiatif untuk mengubah bulan ke angka romawi
-                            $geekmonths = [
-                            '01'=>'I',
-                            '02'=>'II',
-                            '03'=>'III',
-                            '04'=>'IV',
-                            '05'=>'V',
-                            '06'=>'VI',
-                            '07'=>'VII',
-                            '08' =>'VIII',
-                            '09'=>'IX',
-                            '10'=>'X',
-                            '11'=> 'XI',
-                            '12'=> 'XII'
-                            ];
-                            $geekmonth = $geekmonths[$requestMonth];
+                            $geekmonth = $this->geekmonths[$requestMonth];
                             $strToSlug = Str::slug($request->deskripsi);
-
                             //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
                             $idkodelembaga = $request->company;
                             //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
@@ -260,29 +225,9 @@ class LettersController extends Controller
                                 //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
                                 // $tgl_surat = Carbon::now();  
                                 $tgl_surat = Carbon::parse($request->tgl_surat);
-                                //array asosiatif untuk mengubah bulan ke angka romawi
-                                $geekmonths = [
-                                '01'=>'I',
-                                '02'=>'II',
-                                '03'=>'III',
-                                '04'=>'IV',
-                                '05'=>'V',
-                                '06'=>'VI',
-                                '07'=>'VII',
-                                '08' =>'VIII',
-                                '09'=>'IX',
-                                '10'=>'X',
-                                '11'=> 'XI',
-                                '12'=> 'XII'
-                                ];
-                                $geekmonth = $geekmonths[$requestMonth];
+                                $geekmonth = $this->geekmonths[$requestMonth];
                                 $strToSlug = Str::slug($request->deskripsi);
             
-                                //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
-                               
-                                // $PresentMonthCount =$format->where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->pluck('id')->count()+1;
-                                
-                                
                                 //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
                                 $idkodelembaga = $request->company;
                                 $kodesurat = Md_letters::find($id);
@@ -290,12 +235,8 @@ class LettersController extends Controller
 
                       $PresentMonthCount = Letters::where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->where('md_letters_id','=',$id)->where('md_companies_id', '=', $idkodelembaga)->pluck('id')->count()+1;
 
-                
                                 //menghitung digit untuk business logic dari kode surat
                                 $digit = strlen($PresentMonthCount);
-                                
-                                
-                            
                             //business logic kode surat upana
                                 if($digit ===1 ){
                                     
@@ -400,28 +341,9 @@ class LettersController extends Controller
                 }elseif($getId->isEmpty()){
                                         //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
                                         $tgl_surat = Carbon::parse($request->tgl_surat);  
-                                        //array asosiatif untuk mengubah bulan ke angka romawi
-                                        $geekmonths = [
-                                        '01'=>'I',
-                                        '02'=>'II',
-                                        '03'=>'III',
-                                        '04'=>'IV',
-                                        '05'=>'V',
-                                        '06'=>'VI',
-                                        '07'=>'VII',
-                                        '08' =>'VIII',
-                                        '09'=>'IX',
-                                        '10'=>'X',
-                                        '11'=> 'XI',
-                                        '12'=> 'XII'
-                                        ];
-                                        $geekmonth = $geekmonths[$requestMonth];
+                                        $geekmonth = $this->geekmonths[$requestMonth];
                                         $strToSlug = Str::slug($request->deskripsi);
-            
-                                        //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
-                                        //  $PassedMonthCount=Format::where('bulan_surat','<', $thisMonth)->pluck('id')->count();
-                                        // $PresentMonthCount =Letters::where('month_letter','=', $requestMonth)->pluck('id')->count()+1;
-                                        
+             
                                         $idkodelembaga = $request->company;
                                         //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
                                         $kodesurat = Md_letters::find($id);
