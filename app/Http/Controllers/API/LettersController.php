@@ -204,9 +204,6 @@ class LettersController extends Controller
                             $strToSlug = Str::slug($request->deskripsi);
 
                             //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
-                            //  $PassedMonthCount=Format::where('bulan_surat','<', $thisMonth)->pluck('id')->count();
-                            // $PresentMonthCount =Letters::where('month_letter','=', $requestMonth)->pluck('id')->count()+1;
-                            
                             $idkodelembaga = $request->company;
                             //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
                             $kodesurat = Md_letters::find($id);
@@ -214,15 +211,9 @@ class LettersController extends Controller
 
                       $PresentMonthCount = Letters::where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->where('md_letters_id','=',$id)->where('md_companies_id', '=', $idkodelembaga)->pluck('id')->count()+1;
 
-
-                            
-                        
                             //menghitung digit untuk business logic dari kode surat
                             $digit = strlen($PresentMonthCount);
-                            
-                            
-                        
-                        
+                                 
                         $format = Letters::create([
                             'month_letter'=> $requestMonth,
                             'year_letter'=> $year,
@@ -438,12 +429,9 @@ class LettersController extends Controller
 
                                         $PresentMonthCount = Letters::where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->where('md_letters_id','=',$id)->where('md_companies_id', '=', $idkodelembaga)->pluck('id')->count()+1;
 
-                                    
                                         //menghitung digit untuk business logic dari kode surat
                                         $digit = strlen($PresentMonthCount);
                                         
-                                        
-                                    
                                         $format->update([
                                             'month_letter'=> $requestMonth,
                                             'year_letter'=> $year,
