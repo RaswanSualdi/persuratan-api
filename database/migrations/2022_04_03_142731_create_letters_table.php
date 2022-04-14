@@ -16,6 +16,7 @@ class CreateLettersTable extends Migration
         Schema::create('letters', function (Blueprint $table) {
             $table->id();
             $table->integer('md_letters_id');
+            $table->integer('md_companies_id');
             $table->string('letter');
             $table->string('description');
             $table->string('link');

@@ -61,15 +61,17 @@ class LettersController extends Controller
                     $geekmonth = $geekmonths[$requestMonth];
                     $strToSlug = Str::slug($request->deskripsi);
 
-                    //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
-                
-                    $PresentMonthCount = Letters::where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->where('md_letters_id','=',$id)->pluck('id')->count()+1;
+                  
                     
                     
                     //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
                     $idkodelembaga = $request->company;
                     $kodesurat = Md_letters::find($id);
                     $kodelembaga = Md_companies::find($idkodelembaga);
+
+                      //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
+                
+                      $PresentMonthCount = Letters::where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->where('md_letters_id','=',$id)->where('md_companies_id', '=', $idkodelembaga)->pluck('id')->count()+1;
 
     
                     //menghitung digit untuk business logic dari kode surat
@@ -83,6 +85,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.00'.$PresentMonthCount,
                                 'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -97,6 +100,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.00'.$PresentMonthCount,
                                 'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -115,6 +119,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.0'.$PresentMonthCount,
                                 'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -129,6 +134,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.0'.$PresentMonthCount ,
                                 'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -146,6 +152,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.'.$PresentMonthCount ,
                                 'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -160,6 +167,7 @@ class LettersController extends Controller
                                 'month_letter'=> $requestMonth,
                                 'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.'.$PresentMonthCount ,
                                 'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
@@ -214,6 +222,7 @@ class LettersController extends Controller
                             'month_letter'=> $requestMonth,
                             'year_letter'=> $year,
                                 'md_letters_id'=>$id,
+                                'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.00'.$PresentMonthCount,
                                 'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
                                 'description'=>$request->deskripsi,
