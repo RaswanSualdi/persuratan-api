@@ -39,14 +39,31 @@ use Illuminate\Support\Facades\Route;
 //get data
 
 
-Route::post('/auth/register', [AuthController::class, 'register']);
-Route::post('/auth/login', [AuthController::class, 'login']);
-Route::group(['middleware' => ['auth:sanctum','cors']], function () {
-    Route::get('/profile', function(Request $request) {
-        return auth()->user();
-    });
+// Route::post('/auth/register', [AuthController::class, 'register']);
+// Route::post('/auth/login', [AuthController::class, 'login']);
+// Route::group(['middleware' => ['auth:sanctum','cors']], function () {
+//     Route::get('/profile', function(Request $request) {
+//         return auth()->user();
+//     });
 
-    Route::get('/letters/{id}', [LettersController::class, 'all']);
+//     Route::get('/letters/{id}', [LettersController::class, 'all']);
+//     Route::get('/letters',[MdLettersController::class, 'all']);
+//     //post data
+//     Route::post('/letters/{id}',[LettersController::class, 'addLetter']);
+//     //update database
+//     Route::put('letters/{idletter}/{id}',[LettersController::class, 'updateLetter']);
+//     //delete data
+//     Route::delete('/letters/{idletter}/{id}', [LettersController::class,'deleteLetter']);
+
+//     Route::post('/logout', [AuthController::class, 'logout']);
+
+//     Route::get('companies',[MdCompaniesController::class, 'all']);
+  
+    
+// });
+
+
+Route::get('/letters/{id}', [LettersController::class, 'all']);
     Route::get('/letters',[MdLettersController::class, 'all']);
     //post data
     Route::post('/letters/{id}',[LettersController::class, 'addLetter']);
@@ -58,10 +75,6 @@ Route::group(['middleware' => ['auth:sanctum','cors']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('companies',[MdCompaniesController::class, 'all']);
-  
-    
-});
-
 
 
 
