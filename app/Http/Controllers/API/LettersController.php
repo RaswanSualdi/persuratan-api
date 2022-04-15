@@ -32,7 +32,7 @@ class LettersController extends Controller
 
     public function addLetter(FormatSuratRequest $request, $id){
         
-        $year = Carbon::parse($request->tgl_surat)->format('y');
+        $year = Carbon::parse($request->tgl_surat)->format('Y');
     
         $requestMonth = Carbon::parse($request->tgl_surat)->format('m');
 
@@ -68,7 +68,7 @@ class LettersController extends Controller
                                 'md_letters_id'=>$id,
                                 'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.00'.$PresentMonthCount,
-                                'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
@@ -83,7 +83,7 @@ class LettersController extends Controller
                                 'md_letters_id'=>$id,
                                 'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.00'.$PresentMonthCount,
-                                'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
@@ -102,7 +102,7 @@ class LettersController extends Controller
                                 'md_letters_id'=>$id,
                                 'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.0'.$PresentMonthCount,
-                                'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
@@ -117,7 +117,7 @@ class LettersController extends Controller
                                 'md_letters_id'=>$id,
                                 'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.0'.$PresentMonthCount ,
-                                'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
@@ -135,7 +135,7 @@ class LettersController extends Controller
                                 'md_letters_id'=>$id,
                                 'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.'.$PresentMonthCount ,
-                                'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
@@ -150,7 +150,7 @@ class LettersController extends Controller
                                 'md_letters_id'=>$id,
                                 'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.'.$PresentMonthCount ,
-                                'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
@@ -185,7 +185,7 @@ class LettersController extends Controller
                                 'md_letters_id'=>$id,
                                 'md_companies_id'=>$idkodelembaga,
                                 'no_letter'=>'No.00'.$PresentMonthCount,
-                                'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                 'description'=>$request->deskripsi,
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
@@ -203,8 +203,6 @@ class LettersController extends Controller
     public function updateLetter(FormatSuratRequest $request, $idformat, $id){
                     $format = Letters::find($idformat);
                     // $kodelembaga = Md_companies::find($idkodelembaga);
-
-
                     if(!$format){
                         return ResponseFormatter::error(null, 'data tidak ditemukan',404);
                     }
@@ -223,7 +221,7 @@ class LettersController extends Controller
                                     $getId=Letters::all('id','month_letter')->toArray();
                                     $getMaxId=max($getId);
                                 //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
-                                // $tgl_surat = Carbon::now();  
+                                
                                 $tgl_surat = Carbon::parse($request->tgl_surat);
                                 $geekmonth = $this->geekmonths[$requestMonth];
                                 $strToSlug = Str::slug($request->deskripsi);
@@ -247,7 +245,7 @@ class LettersController extends Controller
                                             'md_letters_id'=>$id,
                                             'md_companies_id'=>$idkodelembaga,
                                             'no_letter'=>'No.00'.$PresentMonthCount,
-                                            'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                            'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                             'description'=>$request->deskripsi,
                                             'link'=> $request->link,
                                             'date_letter'=>$tgl_surat,
@@ -261,7 +259,7 @@ class LettersController extends Controller
                                             'md_letters_id'=>$id,
                                             'md_companies_id'=>$idkodelembaga,
                                             'no_letter'=>'No.00'.$PresentMonthCount,
-                                            'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                            'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                             'description'=>$request->deskripsi,
                                             'link'=> $request->link,
                                             'date_letter'=>$tgl_surat,
@@ -279,7 +277,7 @@ class LettersController extends Controller
                                             'md_letters_id'=>$id,
                                             'md_companies_id'=>$idkodelembaga,
                                             'no_letter'=>'No.0'.$PresentMonthCount,
-                                            'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                            'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                             'description'=>$request->deskripsi,
                                             'link'=> $request->link,
                                             'date_letter'=>$tgl_surat,
@@ -294,7 +292,7 @@ class LettersController extends Controller
                                             'md_letters_id'=>$id,
                                             'md_companies_id'=>$idkodelembaga,
                                             'no_letter'=>'No.0'.$PresentMonthCount,
-                                            'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                            'letter'=>'No.0'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                             'description'=>$request->deskripsi,
                                             'link'=> $request->link,
                                             'date_letter'=>$tgl_surat,
@@ -311,7 +309,7 @@ class LettersController extends Controller
                                             'md_letters_id'=>$id,
                                             'md_companies_id'=>$idkodelembaga,
                                             'no_letter'=>'No.'.$PresentMonthCount,
-                                            'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                            'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                             'description'=>$request->deskripsi,
                                             'link'=> $request->link,
                                             'date_letter'=>$tgl_surat,
@@ -326,7 +324,7 @@ class LettersController extends Controller
                                             'md_letters_id'=>$id,
                                             'md_companies_id'=>$idkodelembaga,
                                             'no_letter'=>'No.'.$PresentMonthCount,
-                                            'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                            'letter'=>'No.'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                             'description'=>$request->deskripsi,
                                             'link'=> $request->link,
                                             'date_letter'=>$tgl_surat,
@@ -360,7 +358,7 @@ class LettersController extends Controller
                                             'md_letters_id'=>$id,
                                             'md_companies_id'=>$idkodelembaga,
                                             'no_letter'=>'No.00'.$PresentMonthCount,
-                                            'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/20'.$year,
+                                            'letter'=>'No.00'.$PresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
                                             'description'=>$request->deskripsi,
                                             'link'=> $request->link,
                                             'date_letter'=>$tgl_surat,
@@ -374,12 +372,15 @@ class LettersController extends Controller
 
      public function deleteLetter($idletter,$id){
          $letter = Letters::where('md_letters_id', '=', $idletter)->find($id);
-         $letters = Letters::where('md_letters_id', '=', $idletter)->pluck('letter');
+        //  $letters = Letters::where('md_letters_id', '=', $idletter)->pluck('letter');
          if(!$letter){
              return response()->json(['message'=>'data tidak ditemukan', 'code status'=>404]);
          }
 
-         dd(str_split($letters[1][5]));
+         $letter->delete();
+         return ResponseFormatter::success($letter, 'data berhasil dihapus', 204);
+
+       
         
      
      }

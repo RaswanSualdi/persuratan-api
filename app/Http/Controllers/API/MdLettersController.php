@@ -24,12 +24,12 @@ public function all(Request $request){
        
 
     
-     $data =  Md_letters::all();
+     $data =  Md_letters::paginate($paginate);
     //  return $data;
-    // return ResponseFormatter::success($data, 'data berhasil diambil',Response::HTTP_OK);
+    return ResponseFormatter::success($data, 'data berhasil diambil',Response::HTTP_OK);
 
-    $getData = MdLettersResource::collection($data);
-     return ResponseFormatter::success($getData, 'data berhasil diambil',Response::HTTP_OK);
+    // $getData = MdLettersResource::collection($data);
+    //  return ResponseFormatter::success($getData, 'data berhasil diambil',Response::HTTP_OK);
 
     }
 }
