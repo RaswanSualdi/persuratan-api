@@ -24,9 +24,9 @@ class FormatSuratRequest extends FormRequest
     public function rules()
     {
         return [
-            'deskripsi'=>'required|min:10|max:155',
+            'deskripsi'=>'required|max:300',
             'tgl_surat'=>'required',
-            'link' => 'required|min:10|max:155',
+            'link' => 'required|max:300',
             'company'=> 'required|integer'
            
             

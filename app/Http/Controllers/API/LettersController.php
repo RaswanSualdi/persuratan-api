@@ -358,7 +358,7 @@ class LettersController extends Controller
 
     public function all(Request $request, $id){
 
-                    $letters = (new Letters)->NewQuery();
+                    $letters = Letters::orderBy('created_at','DESC')->NewQuery();
                      $paginate = $request->input('data');
                     $dateFrom =  Carbon::parse($request->input('date_from'))->format('Y-m-d');
                     $dateTo = Carbon::parse($request->input('date_to'))->format('Y-m-d');
