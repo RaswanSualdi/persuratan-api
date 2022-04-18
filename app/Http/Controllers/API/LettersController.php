@@ -44,7 +44,7 @@ class LettersController extends Controller
         if(!$getId->isEmpty()){
                         $getId=Letters::all('id','month_letter')->toArray();
                         $getMaxId=max($getId);  
-                    $tgl_surat = Carbon::parse($request->tgl_surat);
+                    $tgl_surat = Carbon::parse($request->tgl_surat)->format('Y-m-d');
                     $geekmonth = $this->geekmonths[$requestMonth];
                     $strToSlug = Str::slug($request->deskripsi);
                     //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
@@ -167,7 +167,7 @@ class LettersController extends Controller
         return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED);
     }elseif($getId->isEmpty()){
                             //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
-                            $tgl_surat = Carbon::parse($request->tgl_surat);  
+                            $tgl_surat = Carbon::parse($request->tgl_surat)->format('Y-m-d');  
                             $geekmonth = $this->geekmonths[$requestMonth];
                             $strToSlug = Str::slug($request->deskripsi);
                             //untuk menghitung jumlah data yang ada sebelum bulan ini, bulan ini, dan total bulan lalu dan bulan ini
@@ -224,7 +224,7 @@ class LettersController extends Controller
                                     $getMaxId=max($getId);
                                 //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
                                 
-                                $tgl_surat = Carbon::parse($request->tgl_surat);
+                                $tgl_surat = Carbon::parse($request->tgl_surat)->format('Y-m-d');
                                 $geekmonth = $this->geekmonths[$requestMonth];
                                 $strToSlug = Str::slug($request->deskripsi);
             
