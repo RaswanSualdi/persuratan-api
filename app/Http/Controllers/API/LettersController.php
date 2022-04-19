@@ -384,6 +384,7 @@ class LettersController extends Controller
 
                     //jika user hanya memilih date_from
                         if($request->has('date_from')){
+                            
                             return $letters->where('date_letter','=',$dateFrom)->get();
                         }
 
@@ -393,7 +394,15 @@ class LettersController extends Controller
                         }
                     //filter berdasarkan surat lembaga
                         if($request->has('company')){
-                            return $letters->where('letter','like','%'. $request->input('company').'%')->paginate($paginate);
+                            
+                            
+                                return $letters->where('letter','like','%'. $request->input('company').'%')->paginate($paginate);    
+                            
+                        }
+
+                        if($request->has('company')&& $request->input('date_from')==0 && $request->input('date_to')==0){
+                            return $letters->where('letter','like','%'. $request->input('company').'%')->paginate($paginate);    
+                            
                         }
                     //user menentukan jumlah data yang ingin didisplay
                         if($request->has('data')){
