@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MdLettersSeeder::class,
-            MdCompaniesSeeder::class
+            MdCompaniesSeeder::class,
+            UserSeeder::class
         ]);
     }
 }

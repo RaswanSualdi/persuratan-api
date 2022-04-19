@@ -360,8 +360,8 @@ class LettersController extends Controller
 
                     $letters = Letters::orderBy('created_at','DESC')->NewQuery();
                      $paginate = $request->input('data');
-                    $dateFrom =  Carbon::parse($request->input('date_from'))->format('Y-m-d');
-                    $dateTo = Carbon::parse($request->input('date_to'))->format('Y-m-d');
+                    $dateFrom =  Carbon::parse(intval(($request->input('date_from'))))->format('Y-m-d');
+                    $dateTo = Carbon::parse(intval(($request->input('date_to'))))->format('Y-m-d');;
                    
                     //search detail surat berdasarkan deskripsi 
                     if ($request->has('search')){
@@ -392,10 +392,13 @@ class LettersController extends Controller
                         if($request->has('data')){
                             return $letters->paginate($paginate);
                         }
+                 
                   // ketika user tidak menentukan jumlah data yang ingin di display, maka secara default data yang akan ditampilkan adala 10 data  
-                return $letters->whereHas('md_letters',function($query) use($id){
+
+                  return $letters->whereHas('md_letters',function($query) use($id){
                     $query->where('id', '=',$id);
                 })->paginate(10);
+                
 
    }
 }
