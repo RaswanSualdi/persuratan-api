@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             
         ]];
 
-        DB::table('users')->insert($users);
+        DB::table('users')->insert($users)->;
         
     }
 }

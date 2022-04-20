@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth:sanctum','cors']], function () {
     });
 
     Route::get('/letters/{id}', [LettersController::class, 'all']);
+    
+
     Route::get('/letters',[MdLettersController::class, 'all']);
     //post data
     Route::post('/letters/{id}',[LettersController::class, 'addLetter']);

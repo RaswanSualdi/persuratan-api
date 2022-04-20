@@ -12,6 +12,7 @@ use App\Models\Md_letters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Spatie\QueryBuilder\QueryBuilder;
 
 
 class LettersController extends Controller
@@ -363,17 +364,31 @@ class LettersController extends Controller
                     $dateFrom =  Carbon::parse(intval(($request->input('date_from'))))->format('Y-m-d');
                     $dateTo = Carbon::parse(intval(($request->input('date_to'))))->format('Y-m-d');;
                    
-                    //search detail surat berdasarkan deskripsi 
+                    //search detail surat berdasarkan letter, tanggal, dan deskripsi surat 
                     if ($request->has('search')){
                         $letters->whereHas('md_letters',function($query) use($id){
                             $query->where('id', '=', $id);
-                        })->where('description','like','%'. $request->input('search').'%');
+                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->orWhere('link','like','%'. $request->input('search').'%');
                         return $letters->paginate($paginate);
-                    }      
+                    }  
+                    
+                       if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')){
+                            return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
+                            
+                        }
+
+                        if($request->has('company') && $request->has('date_from') && $request->has('data')){
+                            return $letters->where('date_letter','=',$dateFrom)->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
+                            
+                        }
+
+                        if($request->has('company') && $request->has('date_to') && $request->has('data')){
+                            return $letters->where('date_letter','=',$dateTo)->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
+                            
+                        }
                     //filter data berdasarkan date range
                         if($request->has('date_from') && $request->has('date_to')){
                             if($request->input('date_from')==0 && $request->input('date_to')==0){
-                                
                                 return $letters->whereHas('md_letters',function($query) use($id){
                                     $query->where('id', '=',$id);
                                 })->paginate(10);
@@ -384,29 +399,24 @@ class LettersController extends Controller
 
                     //jika user hanya memilih date_from
                         if($request->has('date_from')){
-                            
-                            return $letters->where('date_letter','=',$dateFrom)->get();
+                            return $letters->where('date_letter','=',$dateFrom)->where('md_letters_id', $id)->paginate($paginate);
                         }
 
                     //jika user hanya memilih date_to 
                         if($request->has('date_to')){
-                            return $letters->where('date_letter','=',$dateTo)->get();
-                        }
-                    //filter berdasarkan surat lembaga
-                        if($request->has('company')){
-                            
-                            
-                                return $letters->where('letter','like','%'. $request->input('company').'%')->paginate($paginate);    
-                            
+                            return $letters->where('date_letter','=',$dateTo)->where('md_letters_id', $id)->paginate($paginate);
                         }
 
-                        if($request->has('company')&& $request->input('date_from')==0 && $request->input('date_to')==0){
-                            return $letters->where('letter','like','%'. $request->input('company').'%')->paginate($paginate);    
-                            
+                      
+                    //filter berdasarkan surat lembaga
+                        if($request->has('company')){
+                                return $letters->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
                         }
+
+                       
                     //user menentukan jumlah data yang ingin didisplay
                         if($request->has('data')){
-                            return $letters->paginate($paginate);
+                            return $letters->where('md_letters_id', $id)->paginate($paginate);
                         }
                  
                   // ketika user tidak menentukan jumlah data yang ingin di display, maka secara default data yang akan ditampilkan adala 10 data  
@@ -415,6 +425,6 @@ class LettersController extends Controller
                     $query->where('id', '=',$id);
                 })->paginate(10);
                 
-
    }
+  
 }
