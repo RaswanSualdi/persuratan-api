@@ -416,7 +416,7 @@ class LettersController extends Controller
                        
                     //user menentukan jumlah data yang ingin didisplay
                         if($request->has('data')){
-                            return $letters->where('md_letters_id', $id)->paginate($paginate);
+                            return $letters->paginate($paginate);
                         }
                  
                   // ketika user tidak menentukan jumlah data yang ingin di display, maka secara default data yang akan ditampilkan adala 10 data  
