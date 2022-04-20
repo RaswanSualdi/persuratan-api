@@ -71,9 +71,9 @@ return [
 
     'timezone' => 'Asia/Jakarta',
 
-'locale' => 'id',
+    'locale' => 'id',
 
-'faker_locale' => 'id_ID',
+    'faker_locale' => 'id_ID',
 
     /*
     |--------------------------------------------------------------------------
