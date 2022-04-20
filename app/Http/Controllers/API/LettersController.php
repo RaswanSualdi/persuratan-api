@@ -391,7 +391,7 @@ class LettersController extends Controller
                             if($request->input('date_from')==0 && $request->input('date_to')==0){
                                 return $letters->whereHas('md_letters',function($query) use($id){
                                     $query->where('id', '=',$id);
-                                })->paginate(10);
+                                })->paginate($paginate);
                             }
                             return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('md_letters_id', $id)->paginate($paginate);
 
@@ -416,7 +416,7 @@ class LettersController extends Controller
                        
                     //user menentukan jumlah data yang ingin didisplay
                         if($request->has('data')){
-                            return $letters->paginate($paginate);
+                            return $letters->where('md_letters_id', $id)->paginate($paginate);
                         }
                  
                   // ketika user tidak menentukan jumlah data yang ingin di display, maka secara default data yang akan ditampilkan adala 10 data  
