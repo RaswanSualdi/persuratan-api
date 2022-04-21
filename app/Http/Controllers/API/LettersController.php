@@ -362,31 +362,74 @@ class LettersController extends Controller
                     $letters = Letters::orderBy('created_at','DESC')->NewQuery();
                      $paginate = $request->input('data');
                     $dateFrom =  Carbon::parse(intval(($request->input('date_from'))))->format('Y-m-d');
-                    $dateTo = Carbon::parse(intval(($request->input('date_to'))))->format('Y-m-d');;
+                    $dateTo = Carbon::parse(intval(($request->input('date_to'))))->format('Y-m-d');
                    
-                    //search detail surat berdasarkan letter, tanggal, dan deskripsi surat 
+            
+                    //company, date_from , date_to, data, search
+                    if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')&& $request->has('search')){
+                        if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')&& $request->has('search')== " "){
+                            
+                            return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
+                                $query->where('id', '=', $id);
+                            })->where('description','like','%'. $request->input('search').'%')->paginate($paginate);
+                        }
+                       
+                        return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
+                            $query->where('id', '=', $id);
+                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->paginate($paginate);
+                        
+                        
+                    }
+
+                    //date_to, date_from, Search
+                    if ($request->has('search')&&$request->has('date_to') && $request->has('date_from')){
+                        $letters->whereHas('md_letters',function($query) use($id){
+                            $query->where('id', '=', $id);
+                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->whereBetween('date_letter',[$dateFrom, $dateTo]);
+                        return $letters->paginate($paginate);
+                    } 
+
+                    //date_to, Search
+                    if ($request->has('search')&&$request->has('date_to')){
+                        $letters->whereHas('md_letters',function($query) use($id){
+                            $query->where('id', '=', $id);
+                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->where('date_letter','=',$dateTo);
+                        return $letters->paginate($paginate);
+                    } 
+
+                     //date_from, Search
+                     if ($request->has('search')&&$request->has('date_from')){
+                        $letters->whereHas('md_letters',function($query) use($id){
+                            $query->where('id', '=', $id);
+                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->where('date_letter','=',$dateFrom);
+                        return $letters->paginate($paginate);
+                    } 
+
+                    //search 
                     if ($request->has('search')){
                         $letters->whereHas('md_letters',function($query) use($id){
                             $query->where('id', '=', $id);
-                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->orWhere('link','like','%'. $request->input('search').'%');
+                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%');
                         return $letters->paginate($paginate);
                     }  
                     
+                    //company, date_from, date_to, data 
                        if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')){
                             return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
                             
                         }
 
+                    //company, date_from, data
                         if($request->has('company') && $request->has('date_from') && $request->has('data')){
                             return $letters->where('date_letter','=',$dateFrom)->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
                             
                         }
-
+                    //company, date_to, data
                         if($request->has('company') && $request->has('date_to') && $request->has('data')){
                             return $letters->where('date_letter','=',$dateTo)->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
                             
                         }
-                    //filter data berdasarkan date range
+                    //date_from, date_to
                         if($request->has('date_from') && $request->has('date_to')){
                             if($request->input('date_from')==0 && $request->input('date_to')==0){
                                 return $letters->whereHas('md_letters',function($query) use($id){

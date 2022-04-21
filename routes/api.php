@@ -38,7 +38,6 @@ use Illuminate\Support\Facades\Route;
 //get data
 
 
-Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum','cors']], function () {
     Route::get('/profile', function(Request $request) {
@@ -47,6 +46,7 @@ Route::group(['middleware' => ['auth:sanctum','cors']], function () {
 
     Route::get('/letters/{id}', [LettersController::class, 'all']);
     
+    Route::post('/users', [AuthController::class, 'addUser']);
 
     Route::get('/letters',[MdLettersController::class, 'all']);
     //post data
