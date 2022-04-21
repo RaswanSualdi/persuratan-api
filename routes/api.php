@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\API\LettersController;
 use App\Http\Controllers\API\MdLettersController;
-use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\UsersController;
 use App\Http\Controllers\API\MdCompaniesController;
 
 
@@ -38,15 +38,14 @@ use Illuminate\Support\Facades\Route;
 //get data
 
 
-Route::post('/auth/login', [AuthController::class, 'login']);
-Route::group(['middleware' => ['auth:sanctum','cors']], function () {
+Route::post('/auth/login', [UsersController::class, 'login']);
+Route::group(['middleware' => ['auth:sanctum','checkrole:super_admin, admin','cors']], function () {
     Route::get('/profile', function(Request $request) {
         return auth()->user();
     });
 
     Route::get('/letters/{id}', [LettersController::class, 'all']);
     
-    Route::post('/users', [AuthController::class, 'addUser']);
 
     Route::get('/letters',[MdLettersController::class, 'all']);
     //post data
@@ -56,12 +55,16 @@ Route::group(['middleware' => ['auth:sanctum','cors']], function () {
     //delete data
     Route::delete('/letters/{idletter}/{id}', [LettersController::class,'deleteLetter']);
 
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [UsersController::class, 'logout']);
 
     Route::get('companies',[MdCompaniesController::class, 'all']);
   
     
 });
+
+Route::post('/users', [UsersController::class, 'addUser'])->middleware( ['auth:sanctum','checkrole:super_admin','cors']);
+Route::get('/users', [UsersController::class, 'all'])->middleware( ['auth:sanctum','checkrole:super_admin','cors']);
+
 
 
 

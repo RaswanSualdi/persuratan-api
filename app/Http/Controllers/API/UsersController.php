@@ -10,23 +10,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class AuthController extends Controller
+class UsersController extends Controller
 {
     public function addUser(Request $req, addUserRequest $request){
         $user = $req->user();
-        // $validator = Validator::make($request->all(), [
-        //     'name'=>'required',
-        //     'email'=>'required|email|unique:users',
-        //     'password'=>'required',
-        //     'password_confirmation' =>'required|same:password'
-        // ]);
-
-        // if($validator->fails()){
-        //     return response()->json(['message'=>'register gagal', 'code status'=>401]);
-        // }
-
-        // $input = $request->all();
-        // $input['password']= bcrypt($input['password']);
+        
         if($user->id ==$user->tokenCan('create')){
             $input = $request->all();
             $input['password']= bcrypt($input['password']);
@@ -74,5 +62,12 @@ class AuthController extends Controller
         $user = $request->user();
         $user->currentAccessToken()->delete();
         return response()->json(['message'=> 'anda telah berhasil logout']);
+    }
+
+    public function all(Request $request){
+        $paginate = $request->input('data');
+        $users = User::paginate($paginate);
+        return ResponseFormatter::success($users, 'data berhasil diambil', 200);
+
     }
 }
