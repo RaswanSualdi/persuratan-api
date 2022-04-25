@@ -15,7 +15,7 @@ class UsersController extends Controller
     public function addUser(Request $req, addUserRequest $request){
         $user = $req->user();
         
-        if($user->id ==$user->tokenCan('create')){
+        // if($user->id ==$user->tokenCan('create')){
             $input = $request->all();
             $input['password']= bcrypt($input['password']);
             $user= User::create($input);
@@ -23,10 +23,10 @@ class UsersController extends Controller
             $success['name'] = $user->name;
     
             return ResponseFormatter::success($success, 'berhasil buat akun',200);
-        }else{
-            return ResponseFormatter::error( null, 'anda bukan super admin', 401);
+        // }else{
+        //     return ResponseFormatter::error( null, 'anda bukan super admin', 401);
 
-        }
+        // }
 
       
     }
@@ -37,18 +37,32 @@ class UsersController extends Controller
             return response()->json(['message'=> 'Unauthorized'], 401);
         }
 
+        // $user = User::where('email', $request->email)->firstOrFail();
+        // if($user->id===1){
+        //     $token = $user->createToken("access_token", ["create"])->plainTextToken;
+        //     return response()->json(['message'=>'Hi '. $user->name.' Selamat datang',
+        //     'access_token'=>$token, 
+        //     'token_type'=> 'Bearer']);
+        // }else{
+        //     $token = $user->createToken("access_token", ["read"])->plainTextToken;
+        //     return response()->json(['message'=>'Hi '. $user->name.' Selamat datang',
+        //                                 'access_token'=>$token, 
+        //                                 'token_type'=> 'Bearer']);
+        // }
+
+
         $user = User::where('email', $request->email)->firstOrFail();
-        if($user->id===1){
-            $token = $user->createToken("access_token", ["create"])->plainTextToken;
+        // if($user->id===1){
+            $token = $user->createToken("access_token")->plainTextToken;
             return response()->json(['message'=>'Hi '. $user->name.' Selamat datang',
             'access_token'=>$token, 
             'token_type'=> 'Bearer']);
-        }else{
-            $token = $user->createToken("access_token", ["read"])->plainTextToken;
-            return response()->json(['message'=>'Hi '. $user->name.' Selamat datang',
-                                        'access_token'=>$token, 
-                                        'token_type'=> 'Bearer']);
-        }
+        // }else{
+        //     $token = $user->createToken("access_token", ["read"])->plainTextToken;
+        //     return response()->json(['message'=>'Hi '. $user->name.' Selamat datang',
+        //                                 'access_token'=>$token, 
+        //                                 'token_type'=> 'Bearer']);
+        // }
         
         // else{
         //     $token = $user->createToken("access_token",["read"])->plainTextToken;
