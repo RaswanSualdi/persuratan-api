@@ -203,144 +203,24 @@ class LettersController extends Controller
 
 }
 
-    public function updateLetter(EditLettersRequest $request, $idformat, $id){
+    public function updateLetter(EditLettersRequest $request, $idformat){
                     $format = Letters::find($idformat);
                     // $kodelembaga = Md_companies::find($idkodelembaga);
                     if(!$format){
                         return ResponseFormatter::error(null, 'data tidak ditemukan',404);
                     }
                     $format->description = $request->deskripsi;
-                    $format->date_letter = $request->tgl_surat;
+                
                     $format->link = $request->link;
-                    $year = Carbon::parse($request->tgl_surat)->format('y');
-        
-        
-                    $requestMonth = Carbon::parse($request->tgl_surat)->format('m');
+                     $strToSlug = Str::slug($request->deskripsi);
             
-                    //untuk mengambil key id dan key bulan_surat yang ada pada model Format/ tabel format
-                    $getId=Letters::all('id','month_letter');
-                    // mengambil array yang mempunyai id terbesar pada table format
-                    if(!$getId->isEmpty()){
-                                    $getId=Letters::all('id','month_letter')->toArray();
-                                    $getMaxId=max($getId);
-                                //tanggal surat yang akan dimasukkan kedalam field tgl surat pada table format
-                                
-                                $tgl_surat = Carbon::parse($request->tgl_surat)->format('Y-m-d');
-                                $geekmonth = $this->geekmonths[$requestMonth];
-                                $strToSlug = Str::slug($request->deskripsi);
-            
-                                //mengambil id dari table kode_surat dan table kode_surat_lembaga agar dapat mengakses kode dari masing masing table
-                                $idkodelembaga = $request->company;
-                                $kodesurat = Md_letters::find($id);
-                                $kodelembaga = Md_companies::find($idkodelembaga);
-
-                    //   $PresentMonthCount = Letters::where('month_letter','=', $requestMonth)->where('year_letter','=',$year)->where('md_letters_id','=',$id)->where('md_companies_id', '=', $idkodelembaga)->pluck('id')->count()+1;
-                      $editPresentMonthCount = $request->editNoLetter;
-
-                                //menghitung digit untuk business logic dari kode surat
-                                $digit = strlen($editPresentMonthCount);
-                            //business logic kode surat upana
-                                if($digit ===1 ){
-                                    
-                                    if($getMaxId['month_letter']==$requestMonth){
-                                        $format->update([
-                                            'month_letter'=> $requestMonth,
-                                            'year_letter'=> $year,
-                                            'md_letters_id'=>$id,
-                                            'md_companies_id'=>$idkodelembaga,
-                                            'no_letter'=>'No.00'.$editPresentMonthCount,
-                                            'letter'=>'No.00'.$editPresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
-                                            'description'=>$request->deskripsi,
-                                            'link'=> $request->link,
-                                            'date_letter'=>$tgl_surat,
-                                            'slug'=> $strToSlug,
-                                        ]);
-            
-                                    } elseif($getMaxId['month_letter']!=$requestMonth){
-                                        $format->update([
-                                            'month_letter'=> $requestMonth,
-                                            'year_letter'=> $year,
-                                            'md_letters_id'=>$id,
-                                            'md_companies_id'=>$idkodelembaga,
-                                            'no_letter'=>'No.00'.$editPresentMonthCount,
-                                            'letter'=>'No.00'.$editPresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
-                                            'description'=>$request->deskripsi,
-                                            'link'=> $request->link,
-                                            'date_letter'=>$tgl_surat,
-                                            'slug'=> $strToSlug,
-                                        ]);
-                                    }
-                            
-                                
-                                }elseif($digit===2){
-                                    
-                                    if($getMaxId['month_letter']==$requestMonth){
-                                        $format->update([
-                                            'month_letter'=> $requestMonth,
-                                            'year_letter'=> $year,
-                                            'md_letters_id'=>$id,
-                                            'md_companies_id'=>$idkodelembaga,
-                                            'no_letter'=>'No.0'.$editPresentMonthCount,
-                                            'letter'=>'No.0'.$editPresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
-                                            'description'=>$request->deskripsi,
-                                            'link'=> $request->link,
-                                            'date_letter'=>$tgl_surat,
-                                            'slug'=> $strToSlug,
-                                        ]);
-                                    }
-            
-                                    elseif($getMaxId['month_letter']!=$requestMonth){
-                                        $format->update([
-                                            'month_letter'=> $requestMonth,
-                                            'year_letter'=> $year,
-                                            'md_letters_id'=>$id,
-                                            'md_companies_id'=>$idkodelembaga,
-                                            'no_letter'=>'No.0'.$editPresentMonthCount,
-                                            'letter'=>'No.0'.$editPresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
-                                            'description'=>$request->deskripsi,
-                                            'link'=> $request->link,
-                                            'date_letter'=>$tgl_surat,
-                                            'slug'=> $strToSlug,
-                                        ]);
-                                    }
-                                
-                                }else{
-                                    
-                                    if($getMaxId['month_letter']==$requestMonth){
-                                        $format->update([
-                                            'month_letter'=> $requestMonth,
-                                            'year_letter'=> $year,
-                                            'md_letters_id'=>$id,
-                                            'md_companies_id'=>$idkodelembaga,
-                                            'no_letter'=>'No.'.$editPresentMonthCount,
-                                            'letter'=>'No.'.$editPresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
-                                            'description'=>$request->deskripsi,
-                                            'link'=> $request->link,
-                                            'date_letter'=>$tgl_surat,
-                                            'slug'=> $strToSlug,
-                                        ]);
-                                    }
-            
-                                    elseif($getMaxId['month_letter']!=$requestMonth){
-                                        $format->update([
-                                            'month_letter'=> $requestMonth,
-                                            'year_letter'=> $year,
-                                            'md_letters_id'=>$id,
-                                            'md_companies_id'=>$idkodelembaga,
-                                            'no_letter'=>'No.'.$editPresentMonthCount,
-                                            'letter'=>'No.'.$editPresentMonthCount.'/'.$kodesurat->letter.'/'.$kodelembaga->letter.'/'.$geekmonth.'/'.$year,
-                                            'description'=>$request->deskripsi,
-                                            'link'=> $request->link,
-                                            'date_letter'=>$tgl_surat,
-                                            'slug'=> $strToSlug,
-                                        ]);
-                                    }
-                        
-                    }
-                    
-            
+                              $format->update([
+                                 'description'=>$request->deskripsi,
+                                 'link'=> $request->link,
+                                 'slug'=> $strToSlug,
+                                ]);
                     return ResponseFormatter::success($format,'data berhasil diupdate', Response::HTTP_OK);
-                }
+                
      }
 
      public function deleteLetter($idletter,$id){

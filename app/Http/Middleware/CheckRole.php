@@ -15,11 +15,18 @@ class CheckRole
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next, ...$roles)
+    public function handle(Request $request, Closure $next)
     {
-        if(in_array($request->user()->role, $roles)){
-         return $next($request);
+        $roles = array_Slice(func_get_args(), 2);
+        foreach($roles as $role){
+            $user = auth()->user()->role;
+            if($user== $role){
+                return $next($request);
+            }
         }
+        // if(in_array($request->user()->role, $roles)){
+        //  return $next($request);
+        // }
 
         return ResponseFormatter::error(null, 'Anda tidak punya hak akses', 401);
     }

@@ -25,10 +25,7 @@ class EditLettersRequest extends FormRequest
     {
         return [
             'deskripsi'=>'required|max:300',
-            'tgl_surat'=>'required',
             'link' => 'required|max:300',
-            'company'=> 'required|integer',
-            'editNoLetter'=>'required|integer'
         ];
     }
 }
