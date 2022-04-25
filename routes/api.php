@@ -38,7 +38,7 @@ use Illuminate\Support\Facades\Route;
 //get data
 
 
-Route::post('/auth/login', [UsersController::class, 'login']);
+Route::post('/auth/login', [UsersController::class, 'login'])->middleware('cors');
 Route::group(['middleware' => ['auth:sanctum','checkrole:admin,super_admin','cors']], function () {
     Route::get('/profile', function(Request $request) {
         return auth()->user();

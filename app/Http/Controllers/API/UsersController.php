@@ -13,13 +13,28 @@ use Illuminate\Support\Facades\Validator;
 class UsersController extends Controller
 {
     public function addUser(Request $req, addUserRequest $request){
+        // $user = $req->user();
+        
+        // // if($user->id ==$user->tokenCan('create')){
+        //     $input = $request->all();
+        //     $input['password']= bcrypt($input['password']);
+        //     $user= User::create($input);
+        //     $success['token'] = $user->createToken("access_token", ["read"])->plainTextToken;
+        //     $success['name'] = $user->name;
+    
+        //     return ResponseFormatter::success($success, 'berhasil buat akun',200);
+        // // }else{
+        // //     return ResponseFormatter::error( null, 'anda bukan super admin', 401);
+
+        // // }
+
         $user = $req->user();
         
         // if($user->id ==$user->tokenCan('create')){
             $input = $request->all();
             $input['password']= bcrypt($input['password']);
             $user= User::create($input);
-            $success['token'] = $user->createToken("access_token", ["read"])->plainTextToken;
+            $success['token'] = $user->createToken("access_token")->plainTextToken;
             $success['name'] = $user->name;
     
             return ResponseFormatter::success($success, 'berhasil buat akun',200);
