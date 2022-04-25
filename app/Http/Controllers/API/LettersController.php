@@ -241,8 +241,10 @@ class LettersController extends Controller
 
                     $letters = Letters::orderBy('created_at','DESC')->NewQuery();
                      $paginate = $request->input('data');
-                    $dateFrom =  Carbon::parse(intval(($request->input('date_from'))))->format('Y-m-d');
-                    $dateTo = Carbon::parse(intval(($request->input('date_to'))))->format('Y-m-d');
+                    // $dateFrom =  Carbon::parse(intval(($request->input('date_from'))))->format('Y-m-d');
+                    // $dateTo = Carbon::parse(intval(($request->input('date_to'))))->format('Y-m-d');
+                    $dateFrom= date('Y-m-d',$request->input('date_from'));
+                    $dateTo = date('Y-m-d',$request->input('date_to'));
                    
             
                     //company, date_from , date_to, data, search
