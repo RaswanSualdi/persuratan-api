@@ -223,8 +223,10 @@ class LettersController extends Controller
                 
      }
 
-     public function deleteLetter($idletter,$id){
-         $letter = Letters::where('md_letters_id', '=', $idletter)->find($id);
+     public function deleteLetter($id){
+        //  $letter = Letters::where('md_letters_id', '=', $idletter)->find($id);
+         $letter = Letters::find($id);
+
          if(!$letter){
              return response()->json(['message'=>'data tidak ditemukan', 'code status'=>404]);
          }

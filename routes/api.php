@@ -38,7 +38,7 @@ use Illuminate\Support\Facades\Route;
 //get data
 
 
-Route::post('/auth/login', [UsersController::class, 'login'])->middleware(['checkrole:admin,super_admin','cors']);
+Route::post('/auth/login', [UsersController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum','checkrole:admin,super_admin','cors']], function () {
     Route::get('/profile', function(Request $request) {
         return auth()->user();
@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth:sanctum','checkrole:admin,super_admin','cor
     //update database
     Route::put('letters/{idletter}',[LettersController::class, 'updateLetter']);
     //delete data
-    Route::delete('/letters/{idletter}/{id}', [LettersController::class,'deleteLetter']);
+    Route::delete('/letters/{id}', [LettersController::class,'deleteLetter']);
 
     Route::post('/logout', [UsersController::class, 'logout']);
 
