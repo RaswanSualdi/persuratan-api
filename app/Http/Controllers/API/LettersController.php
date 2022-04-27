@@ -266,9 +266,7 @@ class LettersController extends Controller
                         
                         
                     }
-
-                   
-
+                 
                     //date_to, date_from, Search
                     if ($request->has('search')&&$request->has('date_to') && $request->has('date_from')){
                         $letters->whereHas('md_letters',function($query) use($id){
