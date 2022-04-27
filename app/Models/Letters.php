@@ -26,5 +26,9 @@ class Letters extends Model
         return $this->belongsTo(Md_letters::class,'md_letters_id','id');
     }
 
+    public function md_companies(){
+        return $this->belongsTo(Md_companies::class,'md_companies_id','id');
+    }
+
   
 }

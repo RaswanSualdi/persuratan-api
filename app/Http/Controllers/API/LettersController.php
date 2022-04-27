@@ -256,10 +256,21 @@ class LettersController extends Controller
                             })->where('description','like','%'. $request->input('search').'%')->paginate($paginate);
                         }
                        
-                        return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
+                        return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->whereHas('md_companies',function($query) use($request){
+                            $query->where('id','=',$request->input('company'));
+                        })->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
                             $query->where('id', '=', $id);
                         })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->paginate($paginate);
                         
+                        
+                    }
+
+                    if($request->has('company')&&$request->has('search')){
+                        return $letters->whereHas('md_companies',function($query) use($request){
+                            $query->where('id','=',$request->input('company'));
+                        })->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
+                            $query->where('id', '=', $id);
+                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->paginate($paginate);
                         
                     }
 
@@ -297,7 +308,9 @@ class LettersController extends Controller
                     
                     //company, date_from, date_to, data 
                        if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')){
-                            return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
+                            return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->whereHas('md_companies',function($query) use($request){
+                                $query->where('id','=',$request->input('company'));
+                            })->where('md_letters_id', $id)->paginate($paginate);    
                             
                         }
 
@@ -308,7 +321,9 @@ class LettersController extends Controller
                         }
                     //company, date_to, data
                         if($request->has('company') && $request->has('date_to') && $request->has('data')){
-                            return $letters->where('date_letter','=',$dateTo)->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
+                            return $letters->where('date_letter','=',$dateTo)->whereHas('md_companies',function($query) use($request){
+                                $query->where('id','=',$request->input('company'));
+                            })->where('md_letters_id', $id)->paginate($paginate);    
                             
                         }
                     //date_from, date_to
@@ -335,7 +350,9 @@ class LettersController extends Controller
                       
                     //filter berdasarkan surat lembaga
                         if($request->has('company')){
-                                return $letters->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->paginate($paginate);    
+                                return  $letters->whereHas('md_companies',function($query) use($request){
+                                    $query->where('id','=',$request->input('company'));
+                                })->where('md_letters_id', $id)->paginate($paginate);    
                         }
 
                        
