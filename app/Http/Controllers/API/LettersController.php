@@ -260,9 +260,9 @@ class LettersController extends Controller
                             })->where('description','like','%'. $request->input('search').'%')->paginate($paginate);
                         }
                        
-                        return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
+                        return $letters->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
                             $query->where('id', '=', $id);
-                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->paginate($paginate);
+                        })->whereBetween('date_letter',[$dateFrom, $dateTo])->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->paginate($paginate);
                         
                         
                     }
