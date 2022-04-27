@@ -12,4 +12,8 @@ class Md_companies extends Model
     // public function mdletters(){
     //     return $this->hasMany(Md_letters::class,'md_companies_id');
     // }
+
+    public function letters(){
+        return $this->hasMany(Letters::class,'md_companies_id');
+    }
 }
