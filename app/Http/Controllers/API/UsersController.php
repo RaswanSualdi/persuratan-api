@@ -71,7 +71,8 @@ class UsersController extends Controller
             $token = $user->createToken("access_token")->plainTextToken;
             return response()->json(['message'=>'Hi '. $user->name.' Selamat datang',
             'access_token'=>$token, 
-            'token_type'=> 'Bearer']);
+            'token_type'=> 'Bearer',
+            'role'=> $user->role]);
         // }else{
         //     $token = $user->createToken("access_token", ["read"])->plainTextToken;
         //     return response()->json(['message'=>'Hi '. $user->name.' Selamat datang',
