@@ -45,6 +45,8 @@ Route::group(['middleware' => ['auth:sanctum','checkrole:admin,super_admin','cor
     });
 
     Route::get('/letters/{id}', [LettersController::class, 'all']);
+    Route::get('/lettersf', [LettersController::class, 'testfilter']);
+
     
     Route::get('/letters',[MdLettersController::class, 'all']);
     //post data

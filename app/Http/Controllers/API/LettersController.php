@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 
 class LettersController extends Controller
@@ -264,15 +265,36 @@ class LettersController extends Controller
 
                         return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->whereHas('md_companies',function($query) use($request){
                             $query->where('id','=',$request->input('company'));
-                        })->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
+                        })->whereHas('md_letters',function($query) use($id){
 
                             $query->where('id', '=', $id);
-                        })->whereBetween('date_letter',[$dateFrom, $dateTo])->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->paginate($paginate);
+                        })->where(function($q) use($request){
+                            $q->where('description','like','%'. $request->input('search').'%')
+                              ->orWhere('letter','like','%'. $request->input('search').'%');
+                        })->paginate($paginate);
                         
                         
                     }
 
-                 
+                        //data,date_to, date_from, Search
+                        if ($request->has('data')&&$request->has('search')&&$request->has('date_to') && $request->has('date_from')){
+                            return $letters->whereHas('md_letters',function($query) use($id){
+                                $query->where('id', '=', $id);
+                            })->whereBetween('date_letter',[$dateFrom, $dateTo])->where(function($q) use($request){
+                                $q->where('description','like','%'. $request->input('search').'%')
+                                  ->orWhere('letter','like','%'. $request->input('search').'%');
+                            })->paginate($paginate);
+                            
+                        } 
+
+
+                          //company, date_from, date_to, data 
+                       if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')){
+                        return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->whereHas('md_companies',function($query) use($request){
+                            $query->where('id','=',$request->input('company'));
+                        })->where('md_letters_id', $id)->paginate($paginate);    
+                        
+                    }
 
 
                     if($request->has('company')&&$request->has('search')){
@@ -280,18 +302,26 @@ class LettersController extends Controller
                             $query->where('id','=',$request->input('company'));
                         })->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
                             $query->where('id', '=', $id);
-                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->paginate($paginate);
+                        })->where(function($q) use($request){
+                            $q->where('description','like','%'. $request->input('search').'%')
+                              ->orWhere('letter','like','%'. $request->input('search').'%');
+                        })->paginate($paginate);
                         
                     }
 
+                     //date_from, date_to
+                     if($request->has('data')&&$request->has('date_from') && $request->has('date_to')){
+                        if($request->input('date_from')==0 && $request->input('date_to')==0){
+                            return $letters->whereHas('md_letters',function($query) use($id){
+                                $query->where('id', '=',$id);
+                            })->paginate($paginate);
+                        }
+                        return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('md_letters_id', $id)->paginate($paginate);
 
-                    //date_to, date_from, Search
-                    if ($request->has('search')&&$request->has('date_to') && $request->has('date_from')){
-                        $letters->whereHas('md_letters',function($query) use($id){
-                            $query->where('id', '=', $id);
-                        })->where('description','like','%'. $request->input('search').'%')->orWhere('letter','like','%'. $request->input('search').'%')->whereBetween('date_letter',[$dateFrom, $dateTo]);
-                        return $letters->paginate($paginate);
-                    }  
+                    }
+
+
+              
 
                     //date_to, Search
                     if ($request->has('search')&&$request->has('date_to')){
@@ -321,13 +351,7 @@ class LettersController extends Controller
 
                    
                     
-                    //company, date_from, date_to, data 
-                       if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')){
-                            return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->whereHas('md_companies',function($query) use($request){
-                                $query->where('id','=',$request->input('company'));
-                            })->where('md_letters_id', $id)->paginate($paginate);    
-                            
-                        }
+                  
 
                     //company, date_from, data
                         if($request->has('company') && $request->has('date_from') && $request->has('data')){
@@ -341,16 +365,7 @@ class LettersController extends Controller
                             })->where('md_letters_id', $id)->paginate($paginate);    
                             
                         }
-                    //date_from, date_to
-                        if($request->has('date_from') && $request->has('date_to')){
-                            if($request->input('date_from')==0 && $request->input('date_to')==0){
-                                return $letters->whereHas('md_letters',function($query) use($id){
-                                    $query->where('id', '=',$id);
-                                })->paginate($paginate);
-                            }
-                            return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('md_letters_id', $id)->paginate($paginate);
-
-                        }
+                   
 
                     //jika user hanya memilih date_from
                         if($request->has('date_from')){
@@ -383,5 +398,7 @@ class LettersController extends Controller
                 })->paginate(10);
                 
    }
+
+
   
 }
