@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FormatSuratRequest extends FormRequest
+class UploadFileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,7 @@ class FormatSuratRequest extends FormRequest
     public function rules()
     {
         return [
-            'deskripsi'=>'required|max:300',
-            'tgl_surat'=>'required',
-            'link' => 'required|max:300',
-            'company'=> 'required|integer',
-            
-           
-            
-
+         'images'=> 'image'
         ];
     }
 }

@@ -25,6 +25,7 @@ class CreateLettersTable extends Migration
             $table->string('year_letter');
             $table->string('month_letter');
             $table->string('no_letter');
+            $table->string('images')->nullable();
             $table->timestamps();
         });
     }

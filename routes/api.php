@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth:sanctum','checkrole:admin,super_admin','cor
     Route::post('/letters/{id}',[LettersController::class, 'addLetter']);
     //update database
     Route::put('letters/{idletter}',[LettersController::class, 'updateLetter']);
+    Route::post('/files/{id}',[LettersController::class, 'upload']);
     //delete data
     Route::delete('/letters/{id}', [LettersController::class,'deleteLetter']);
 

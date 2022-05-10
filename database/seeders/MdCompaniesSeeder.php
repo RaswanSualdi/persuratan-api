@@ -16,20 +16,21 @@ class MdCompaniesSeeder extends Seeder
     {
         $md_companies = [
             [
+                'companies'=> 'Upana Studio International',
+                'letter'=>'UPAA',
+                'slug'=> 'upana-studio-makassar',
+                'created_at'=> null,
+                'updated_at'=> null,
+            ],
+            [
             'companies'=> 'Upana Studio International',
             'letter'=>'USI',
             'slug'=> 'upana-studio-makassar',
             'created_at'=> null,
             'updated_at'=> null,
-            ],
-
-            [
-            'companies'=> 'Upana Studio International',
-            'letter'=>'UPAA',
-            'slug'=> 'upana-studio-makassar',
-            'created_at'=> null,
-            'updated_at'=> null,
             ]
+
+         
     ];
 
     DB::table('md_companies')->insert($md_companies);

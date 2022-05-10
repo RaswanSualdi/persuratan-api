@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\FormatSuratRequest;
+use App\Http\Requests\UploadFileRequest;
+
 use App\Http\Requests\EditLettersRequest;
 
 use App\Models\Letters;
@@ -77,7 +79,7 @@ class LettersController extends Controller
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
                                 'slug'=> $strToSlug,
-                                
+                               
                             ]);
 
                         } elseif($getMaxId['month_letter']!=$requestMonth){
@@ -92,6 +94,9 @@ class LettersController extends Controller
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
                                 'slug'=> $strToSlug,
+                                
+
+
                                 
                             ]);
                         }
@@ -111,6 +116,9 @@ class LettersController extends Controller
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
                                 'slug'=> $strToSlug,
+                              
+
+
                             ]);
                         }
 
@@ -126,6 +134,9 @@ class LettersController extends Controller
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
                                 'slug'=> $strToSlug,
+                               
+
+
                                 
                             ]);
                         }
@@ -144,6 +155,9 @@ class LettersController extends Controller
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
                                 'slug'=> $strToSlug,
+                              
+
+
                             ]);
                         }
 
@@ -159,6 +173,9 @@ class LettersController extends Controller
                                 'link'=> $request->link,
                                 'date_letter'=>$tgl_surat,
                                 'slug'=> $strToSlug,
+                           
+
+
                                 
                             ]);
                         }
@@ -195,6 +212,9 @@ class LettersController extends Controller
                                 'date_letter'=>$tgl_surat,
                                 'slug'=> $strToSlug,
                                 
+
+
+                                
                         
                         ]);
                         return ResponseFormatter::success($format,'data berhasil dibuat', Response::HTTP_CREATED);
@@ -222,6 +242,18 @@ class LettersController extends Controller
                                 ]);
                     return ResponseFormatter::success($format,'data berhasil diupdate', Response::HTTP_OK);
                 
+     }
+
+
+     public function upload(UploadFileRequest $request, $id){
+       $letter = Letters::find($id);
+       $letter->update([
+        'images'=> $request->file('images')->store('assets/images', 'public')
+        
+       ]);
+
+       return ResponseFormatter::success($letter,'data berhasil diupload', Response::HTTP_OK);
+
      }
 
      public function deleteLetter($id){

@@ -28,7 +28,8 @@ class Letters extends Model
         'md_letters_id',
         'md_companies_id',
         'year_letter',
-        'no_letter'
+        'no_letter',
+        'images'
 
     ];
 
@@ -38,6 +39,10 @@ class Letters extends Model
 
     public function md_companies(){
         return $this->belongsTo(Md_companies::class,'md_companies_id','id');
+    }
+
+    public function getImagesAttribute($value){
+        return url('storage/'.$value);
     }
 
   
