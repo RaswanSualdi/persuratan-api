@@ -11,7 +11,7 @@
 
  Pastikan anda sudah menginstall local web server seperti XAMPP, Laragon dll. Setelah itu clone dari github dan masuk kedalam folder lokasi menggunakan CLI pilihan Anda. selanjutnya ikuti cara berikut: 
 
- 1. `copy .env.example .env` untuk membuat file env berdasarkan file `env.example`
+ 1. Jalankan perintah `copy .env.example .env` untuk membuat file env berdasarkan file `env.example`
  2. Tambahkan `SANCTUM_STATEFUL_DOMAINS= http://localhost:3000` pada file `.env`
  3. Jalankan perintah `composer install`
  4. Jalankan perintah `php artisan key:generate` untuk meng-genarate key untuk dimasukkan ke `APP_KEY` di file `.env`
