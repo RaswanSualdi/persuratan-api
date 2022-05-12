@@ -66,6 +66,9 @@ Route::group(['middleware' => ['auth:sanctum','checkrole:admin,super_admin','cor
 
 Route::post('/users', [UsersController::class, 'addUser'])->middleware( ['auth:sanctum','checkrole:super_admin','cors']);
 Route::get('/users', [UsersController::class, 'all'])->middleware( ['auth:sanctum','checkrole:super_admin','cors']);
+Route::put('/users/{id}',[UsersController::class, 'updateUser'])->middleware( ['auth:sanctum','checkrole:super_admin','cors']);
+Route::delete('/users/{id}',[UsersController::class, 'deleteUser'])->middleware( ['auth:sanctum','checkrole:super_admin','cors']);
+
 
 
 

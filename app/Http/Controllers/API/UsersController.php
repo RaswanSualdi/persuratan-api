@@ -4,10 +4,13 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\addUserRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\editUserRequest;
+
 use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
@@ -46,6 +49,24 @@ class UsersController extends Controller
         
 
       
+    }
+
+    public function updateUser(editUserRequest $request, $id){
+        $user = User::find($id);
+        $user->update([
+            'name'=> $request->name,
+            'email'=> $request->email,
+            'password'=> $request->password,
+        ]);
+
+        return ResponseFormatter::success($user,'data berhasil diupdate', Response::HTTP_OK);
+    }
+
+    public function deleteUser($id){
+        $user = User::find($id);
+        $user->delete();
+        return ResponseFormatter::success($user,'data berhasil dihapus', Response::HTTP_OK);
+
     }
 
 
