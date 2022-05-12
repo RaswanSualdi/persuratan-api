@@ -283,15 +283,17 @@ class LettersController extends Controller
                     $dateFrom= date('Y-m-d',$request->input('date_from'));
                     $dateTo = date('Y-m-d',$request->input('date_to'));
                    
+                    
             
                     //company, date_from , date_to, data, search
                     if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')&& $request->has('search')){
-                        // if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')&& $request->has('search')== " "){
+                        // if($request->has('company') && $request->has('date_from') && $request->has('date_to') && $request->has('data')&& $request->has('search')==" "){
                             
-                        //     return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('letter','like','%'. $request->input('company').'%')->where('md_letters_id', $id)->whereHas('md_letters',function($query) use($id){
-                        //         $query->where('id', '=', $id);
-                        //     })->where('description','like','%'. $request->input('search').'%')->paginate($paginate);
+                        //     return $letters->whereHas('md_letters',function($query) use($id){
+                        //         $query->where('id', '=',$id);
+                        //     })->paginate($paginate);
                         // }
+                      
                        
 
 
@@ -307,6 +309,8 @@ class LettersController extends Controller
                         
                         
                     }
+                 
+                    
 
                         //data,date_to, date_from, Search
                         if ($request->has('data')&&$request->has('search')&&$request->has('date_to') && $request->has('date_from')){
@@ -351,6 +355,8 @@ class LettersController extends Controller
                         return $letters->whereBetween('date_letter',[$dateFrom, $dateTo])->where('md_letters_id', $id)->paginate($paginate);
 
                     }
+
+                   
 
 
               
@@ -422,6 +428,9 @@ class LettersController extends Controller
                         if($request->has('data')){
                             return $letters->where('md_letters_id', $id)->paginate($paginate);
                         }
+
+                        
+                   
                  
                   // ketika user tidak menentukan jumlah data yang ingin di display, maka secara default data yang akan ditampilkan adala 10 data  
 
