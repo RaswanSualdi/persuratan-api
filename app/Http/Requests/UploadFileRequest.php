@@ -24,7 +24,7 @@ class UploadFileRequest extends FormRequest
     public function rules()
     {
         return [
-         'images'=> 'image'
+         'images'=> 'file'
         ];
     }
 }
