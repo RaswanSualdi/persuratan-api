@@ -7,13 +7,17 @@ use App\Http\Resources\MdLettersResource;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use App\Models\Md_letters;
+use App\Models\Letters;
 
 
 class MdLettersController extends Controller
 {
  
 public function all(Request $request){
-    $mdletters = (new Md_letters)->newQuery();
+    // $idletters = Letters::pluck('md_letters_id');
+    // $countRelation = Md_letters::where('id','=',$idletters)->count();
+    // $mdletters =(new Md_letters)->update(['count_letters'=> $countRelation] );
+    $mdletters = (new Md_letters)->withCount('letters')->newQuery();
     $paginate = $request->input('data');
     
         if($request->has('data')){
@@ -24,7 +28,8 @@ public function all(Request $request){
        
 
     
-     $data =  Md_letters::paginate($paginate);
+     $data =  Md_letters::withCount('letters')->paginate($paginate);
+   
     //  return $data;
     return ResponseFormatter::success($data, 'data berhasil diambil',Response::HTTP_OK);
 

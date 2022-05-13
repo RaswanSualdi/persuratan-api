@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Md_letters extends Model
 {
+    
     use HasFactory;
     public function letters(){
         return $this->hasMany(Letters::class, 'md_letters_id');
